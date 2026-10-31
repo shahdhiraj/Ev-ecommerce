@@ -1,0 +1,10 @@
+{
+  "description": "Delivers a premium, intuitive e-commerce platform with sleek design and seamless shopping, enhancing user experience for discerning online buyers.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}
