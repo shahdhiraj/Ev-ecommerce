@@ -34,6 +34,7 @@ import {
   ShieldCheck,
   ShoppingBag,
   Sliders,
+  Smartphone,
   Sun,
   Trash2,
   TrendingUp,
@@ -343,6 +344,13 @@ export function StorefrontShell() {
     location.pathname.startsWith("/account") ||
     location.pathname.startsWith("/track-order")
   const isDashboardRoute = isOwnerRoute || isAccountRoute
+  const isMobileAppRoute =
+    location.pathname === "/app" ||
+    location.pathname === "/mobile-app"
+
+  if (isMobileAppRoute) {
+    return <Outlet />
+  }
 
   if (isDashboardRoute) {
     // Current route active tab flags
@@ -1266,6 +1274,17 @@ export function StorefrontShell() {
               </>
             )}
 
+            {/* Direct Mobile App UI Switcher Pill */}
+            <AppLink
+              to="/app"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-orange-500/10 hover:bg-orange-500 text-orange-600 hover:text-white font-bold text-xs border border-orange-500/25 transition-all shadow-xs max-md:hidden"
+              title="Experience Native Mobile App UI & Simulator"
+            >
+              <Smartphone size={15} />
+              <span>Mobile App</span>
+              <span className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-ping" />
+            </AppLink>
+
             <button
               className={`header-action-btn max-md:hidden ${
                 location.pathname === "/wishlist" ? "is-active" : ""
@@ -1525,6 +1544,30 @@ export function StorefrontShell() {
                 <X size={20} />
               </IconButton>
             </div>
+
+            {/* Mobile App Mode Banner in Drawer */}
+            <div className="p-3 bg-gradient-to-r from-orange-500/10 via-amber-500/10 to-orange-500/10 border-b border-orange-200/50">
+              <AppLink
+                onClick={() => setMenuOpen(false)}
+                to="/app"
+                className="flex items-center justify-between p-2.5 rounded-xl bg-white border border-orange-200 shadow-xs hover:border-orange-400 transition-all"
+              >
+                <div className="flex items-center gap-2.5">
+                  <div className="w-8 h-8 rounded-lg bg-orange-500 text-white flex items-center justify-center shrink-0">
+                    <Smartphone size={16} />
+                  </div>
+                  <div>
+                    <div className="text-xs font-extrabold text-slate-900 flex items-center gap-1.5">
+                      <span>Native Mobile App UI</span>
+                      <span className="px-1.5 py-0.2 rounded text-[9px] bg-orange-500 text-white font-bold">120Hz</span>
+                    </div>
+                    <div className="text-[10px] text-orange-600 font-semibold">Dynamic Island · Stories · Quick Buy</div>
+                  </div>
+                </div>
+                <ChevronRight size={16} className="text-orange-500" />
+              </AppLink>
+            </div>
+
             <div className="mobile-nav">
               <span className="mobile-nav__label">Shop Categories</span>
               <AppLink onClick={() => setMenuOpen(false)} to="/categories">
@@ -1741,6 +1784,17 @@ export function StorefrontShell() {
         >
           <LayoutGrid size={20} />
           <span>Explore</span>
+        </AppLink>
+
+        <AppLink
+          to="/app"
+          className={`mobile-bottom-nav__item ${location.pathname === "/app" ? "is-active text-orange-600 font-bold" : ""}`}
+        >
+          <div className="relative inline-flex items-center justify-center">
+            <Smartphone size={20} className="text-orange-500" />
+            <span className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-ping absolute -top-0.5 -right-0.5" />
+          </div>
+          <span className="font-bold text-orange-600">App UI</span>
         </AppLink>
 
         <AppLink

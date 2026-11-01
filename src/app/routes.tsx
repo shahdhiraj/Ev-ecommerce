@@ -12,6 +12,20 @@ export const router = createBrowserRouter([
     children: [
       { index: true, Component: HomePage },
       {
+        path: "app",
+        lazy: () =>
+          import("../pages/MobileAppPage").then((m) => ({
+            Component: m.MobileAppPage,
+          })),
+      },
+      {
+        path: "mobile-app",
+        lazy: () =>
+          import("../pages/MobileAppPage").then((m) => ({
+            Component: m.MobileAppPage,
+          })),
+      },
+      {
         path: "categories",
         lazy: () =>
           import("../pages/AllCategoriesPage").then((m) => ({
