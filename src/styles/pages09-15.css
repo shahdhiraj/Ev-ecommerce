@@ -8160,9 +8160,103 @@ button:active:not(:disabled) {
 }
 
 /* ==========================================================================
+   DASHBOARD TOP NAVIGATION TABS (MOBILE ADAPTIVE)
+   ========================================================================== */
+.dash-top-tabs-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 6px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  box-shadow: 0 2px 10px rgba(15, 23, 42, 0.03);
+}
+
+.dash-top-tabs-bar::-webkit-scrollbar {
+  display: none;
+}
+
+.dash-tab-pill {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 16px;
+  border-radius: 10px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  border: none;
+  background: transparent;
+  color: #64748b;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.dash-tab-pill:hover {
+  background: #f8fafc;
+  color: #0f172a;
+}
+
+.dash-tab-pill.is-active {
+  background: #fff4ea;
+  color: #f58220;
+  box-shadow: 0 2px 6px rgba(245, 130, 32, 0.15);
+}
+
+.dash-tab-pill.is-active svg {
+  color: #f58220;
+}
+
+.dash-tab-badge {
+  font-size: 0.68rem;
+  font-weight: 800;
+  padding: 2px 7px;
+  border-radius: 9999px;
+  background: #f1f5f9;
+  color: #475569;
+}
+
+.dash-tab-pill.is-active .dash-tab-badge {
+  background: #f58220;
+  color: #ffffff;
+}
+
+.dash-tab-badge--alert {
+  background: #fee2e2 !important;
+  color: #ef4444 !important;
+}
+
+/* ==========================================================================
    DASHBOARD MOBILE ADAPTIVE & RESPONSIVE PERFECTION
    ========================================================================== */
 @media (max-width: 768px) {
+  .ubuy-dash-shell {
+    padding-block: 14px 40px !important;
+    width: min(100% - 24px, 1320px) !important;
+    margin-inline: auto !important;
+  }
+
+  .dash-main-area {
+    gap: 14px !important;
+  }
+
+  .dash-top-tabs-bar {
+    padding: 4px !important;
+    gap: 4px !important;
+    border-radius: 12px !important;
+  }
+
+  .dash-tab-pill {
+    padding: 6px 12px !important;
+    font-size: 0.76rem !important;
+    gap: 5px !important;
+  }
+
   .dash-app-top-nav {
     height: 56px !important;
     padding: 0 12px !important;
@@ -8179,16 +8273,18 @@ button:active:not(:disabled) {
     flex-direction: column !important;
     align-items: flex-start !important;
     gap: 10px !important;
-    padding-bottom: 14px !important;
+    padding: 14px 16px !important;
+    border-radius: 14px !important;
   }
 
   .dash-header-left h1 {
-    font-size: 1.25rem !important;
-    line-height: 1.2 !important;
+    font-size: 1.18rem !important;
+    line-height: 1.25 !important;
   }
 
   .dash-header-left p {
-    font-size: 0.76rem !important;
+    font-size: 0.74rem !important;
+    line-height: 1.35 !important;
   }
 
   .dash-header-right {
@@ -8200,13 +8296,86 @@ button:active:not(:disabled) {
     gap: 8px !important;
   }
 
-  /* Metric & KPI Grids: 2 Columns on Mobile */
+  .dash-date-pill {
+    height: 32px !important;
+    padding: 0 10px !important;
+    font-size: 0.72rem !important;
+  }
+
+  /* Metric & KPI Grids: Always 2 Columns on Mobile for clean density */
   .dash-kpis-grid,
   .ubuy-stats-grid,
   .metric-cards-grid,
   .owner-overview-grid {
+    display: grid !important;
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-    gap: 10px !important;
+    gap: 8px !important;
+  }
+
+  .dash-kpi-card-modern {
+    padding: 12px 14px !important;
+    border-radius: 14px !important;
+  }
+
+  .dash-kpi-top {
+    margin-bottom: 6px !important;
+  }
+
+  .dash-kpi-label {
+    font-size: 0.7rem !important;
+  }
+
+  .dash-kpi-icon-box {
+    width: 30px !important;
+    height: 30px !important;
+    border-radius: 8px !important;
+  }
+
+  .dash-kpi-icon-box svg {
+    width: 16px !important;
+    height: 16px !important;
+  }
+
+  .dash-kpi-val {
+    font-size: 1.02rem !important;
+    margin: 4px 0 2px !important;
+  }
+
+  .dash-kpi-sub {
+    font-size: 0.63rem !important;
+    line-height: 1.2 !important;
+  }
+
+  .dash-analytics-split {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+
+  .dash-chart-card {
+    padding: 14px !important;
+    border-radius: 14px !important;
+  }
+
+  .products-control-bar,
+  .orders-filter-chips {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 8px !important;
+  }
+
+  .products-search-wrap {
+    width: 100% !important;
+  }
+
+  .products-actions-wrap {
+    width: 100% !important;
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px !important;
+  }
+
+  .products-filter-select {
+    width: 100% !important;
   }
 
   /* Tables inside Dashboard: scroll horizontally cleanly */
@@ -8223,7 +8392,7 @@ button:active:not(:disabled) {
   }
 
   .owner-tab-panel {
-    padding: 12px 0 !important;
+    padding: 8px 0 !important;
   }
 
   /* Form & Settings 2-column to 1-column */
@@ -8233,7 +8402,7 @@ button:active:not(:disabled) {
   .form-grid-2,
   .form-grid-3 {
     grid-template-columns: 1fr !important;
-    gap: 12px !important;
+    gap: 10px !important;
   }
 
   .owner-modal-content--expanded {
@@ -8246,11 +8415,13 @@ button:active:not(:disabled) {
   }
 }
 
-@media (max-width: 480px) {
-  .dash-kpis-grid,
-  .ubuy-stats-grid,
-  .metric-cards-grid {
-    grid-template-columns: 1fr !important;
+@media (max-width: 380px) {
+  .dash-kpi-card-modern {
+    padding: 10px 10px !important;
+  }
+
+  .dash-kpi-val {
+    font-size: 0.94rem !important;
   }
 }
 

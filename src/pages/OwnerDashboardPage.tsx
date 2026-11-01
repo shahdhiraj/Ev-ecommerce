@@ -513,6 +513,56 @@ export function OwnerDashboardPage() {
           </div>
         </div>
 
+        {/* Modern Mobile-Adaptive Dashboard Top Navigation Tabs */}
+        <div className="dash-top-tabs-bar" role="tablist" aria-label="Dashboard navigation">
+          <button
+            type="button"
+            role="tab"
+            aria-selected={activeTab === "overview"}
+            className={`dash-tab-pill ${activeTab === "overview" ? "is-active" : ""}`}
+            onClick={() => handleTabClick("overview")}
+          >
+            <BarChart3 size={15} />
+            <span>Overview</span>
+          </button>
+          <button
+            type="button"
+            role="tab"
+            aria-selected={activeTab === "products"}
+            className={`dash-tab-pill ${activeTab === "products" ? "is-active" : ""}`}
+            onClick={() => handleTabClick("products")}
+          >
+            <Boxes size={15} />
+            <span>Products</span>
+            <span className="dash-tab-badge">{products.length}</span>
+          </button>
+          <button
+            type="button"
+            role="tab"
+            aria-selected={activeTab === "orders"}
+            className={`dash-tab-pill ${activeTab === "orders" ? "is-active" : ""}`}
+            onClick={() => handleTabClick("orders")}
+          >
+            <Package size={15} />
+            <span>Orders</span>
+            {stats.processingCount > 0 ? (
+              <span className="dash-tab-badge dash-tab-badge--alert">{stats.processingCount}</span>
+            ) : (
+              <span className="dash-tab-badge">{stats.totalOrders}</span>
+            )}
+          </button>
+          <button
+            type="button"
+            role="tab"
+            aria-selected={activeTab === "settings"}
+            className={`dash-tab-pill ${activeTab === "settings" ? "is-active" : ""}`}
+            onClick={() => handleTabClick("settings")}
+          >
+            <Settings size={15} />
+            <span>Settings</span>
+          </button>
+        </div>
+
           {/* TAB 1: OVERVIEW & KPIS */}
           {activeTab === "overview" && (
             <div className="flex flex-col gap-6">

@@ -317,6 +317,37 @@ export function AccountPage() {
           </div>
         </div>
 
+        {/* Customer Account Top Navigation Tabs Bar */}
+        <div className="dash-top-tabs-bar" role="tablist" aria-label="Customer account views">
+          <button
+            type="button"
+            role="tab"
+            aria-selected={activeTab === "overview"}
+            className={`dash-tab-pill ${activeTab === "overview" ? "is-active" : ""}`}
+            onClick={() => {
+              setActiveTab("overview")
+              navigate("/account")
+            }}
+          >
+            <Package size={15} />
+            <span>Orders & Activity</span>
+            <span className="dash-tab-badge">{orders.length}</span>
+          </button>
+          <button
+            type="button"
+            role="tab"
+            aria-selected={activeTab === "settings"}
+            className={`dash-tab-pill ${activeTab === "settings" ? "is-active" : ""}`}
+            onClick={() => {
+              setActiveTab("settings")
+              navigate("/account/settings")
+            }}
+          >
+            <UserRound size={15} />
+            <span>Profile & Security</span>
+          </button>
+        </div>
+
         {/* Clean Minimal Horizontal Settings Navigation Tabs */}
         {activeTab === "settings" && (
           <div className="flex items-center gap-2 border-b border-slate-200/90 pb-3 mb-6 overflow-x-auto">
