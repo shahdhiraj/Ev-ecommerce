@@ -2,11 +2,13 @@ import { createBrowserRouter } from "react-router"
 import { StorefrontShell } from "../components/StorefrontShell"
 import { HomePage } from "../pages/HomePage"
 import { PlaceholderPage } from "../pages/PlaceholderPage"
+import { GlobalErrorBoundary } from "../components/GlobalErrorBoundary"
 
 export const router = createBrowserRouter([
   {
     path: "/",
     Component: StorefrontShell,
+    ErrorBoundary: GlobalErrorBoundary,
     children: [
       { index: true, Component: HomePage },
       {

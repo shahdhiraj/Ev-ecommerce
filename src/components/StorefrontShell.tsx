@@ -231,7 +231,6 @@ export function StorefrontShell() {
         setMenuOpen(false)
         setCartOpen(false)
         setAccountOpen(false)
-        setCompareOpen(false)
         setSearchFocused(false)
         setActiveMega("")
         setSettingsModalOpen(false)
@@ -243,7 +242,7 @@ export function StorefrontShell() {
 
   // Lock body scroll when mobile drawer, cart, or modal is active
   useEffect(() => {
-    if (menuOpen || cartOpen || accountOpen || compareOpen || settingsModalOpen) {
+    if (menuOpen || cartOpen || accountOpen || settingsModalOpen) {
       document.body.style.overflow = "hidden"
     } else {
       document.body.style.overflow = ""
@@ -251,7 +250,7 @@ export function StorefrontShell() {
     return () => {
       document.body.style.overflow = ""
     }
-  }, [menuOpen, cartOpen, accountOpen, compareOpen, settingsModalOpen])
+  }, [menuOpen, cartOpen, accountOpen, settingsModalOpen])
 
   const [scrolled, setScrolled] = useState(false)
   const [searchFocused, setSearchFocused] = useState(false)
@@ -1285,63 +1284,85 @@ export function StorefrontShell() {
                 ? "/categories"
                 : `/search?subcategory=${encodeURIComponent(category)}`
               const hasMega = Boolean(megaMenu[category])
+              const isCurrent =
+                (isAll && location.pathname === "/categories") ||
+                (location.search.includes(encodeURIComponent(category)))
+              const isActive = activeMega === category || isCurrent
 
               return (
                 <AppLink
-                  className={`clean-nav__item ${isAll ? "is-lead" : ""}`}
+                  className={`clean-nav__item ${isAll ? "is-lead" : ""} ${isActive ? "is-active" : ""}`}
                   key={category}
                   onFocus={() => setActiveMega(hasMega ? category : "")}
                   onMouseEnter={() => setActiveMega(hasMega ? category : "")}
                   to={linkTo}
                 >
                   {isAll && <Zap size={14} className="lead-icon" />}
-                  {category}
-                  {hasMega && <ChevronDown size={13} className="nav-chevron" />}
+                  <span>{category}</span>
+                  {hasMega && (
+                    <ChevronDown
+                      size={12}
+                      className={`nav-chevron transition-transform duration-200 ${
+                        activeMega === category ? "rotate-180 text-orange-500 opacity-100" : ""
+                      }`}
+                    />
+                  )}
                 </AppLink>
               )
             })}
           </div>
 
-          {/* Sleek Mega Menu */}
+          {/* Minimal Clean Mega Submenu */}
           {activeMega && megaMenu[activeMega] && (
-            <div className="clean-mega-menu">
+            <div
+              className="clean-mega-menu"
+              role="region"
+              aria-label={`${activeMega} submenu`}
+            >
               <div className="container clean-mega-menu__inner">
                 <div className="mega-columns">
                   {megaMenu[activeMega].map(([title, ...links]) => (
                     <div key={title} className="mega-col">
-                      <h6>{title}</h6>
-                      {links.map((link) => (
-                        <AppLink
-                          key={link}
-                          to={`/search?q=${encodeURIComponent(link)}`}
-                        >
-                          {link}
-                        </AppLink>
-                      ))}
+                      <span className="mega-col-heading">{title}</span>
+                      <div className="mega-col-links">
+                        {links.map((link) => (
+                          <AppLink
+                            key={link}
+                            className="mega-col-link"
+                            onClick={() => setActiveMega("")}
+                            to={`/search?q=${encodeURIComponent(link)}`}
+                          >
+                            <span>{link}</span>
+                          </AppLink>
+                        ))}
+                      </div>
                     </div>
                   ))}
                 </div>
-                <AppLink
-                  className="mega-featured-card"
-                  to={`/search?subcategory=${encodeURIComponent(activeMega)}`}
-                >
-                  <img
-                    alt=""
-                    src={
-                      activeMega === "Battery & BMS"
-                        ? "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=600&q=80"
-                        : activeMega === "Charging & Wallboxes"
-                          ? "https://images.unsplash.com/photo-1593941707882-a5bba14938c7?auto=format&fit=crop&w=600&q=80"
-                          : "https://images.unsplash.com/photo-1558441719-8b489c63f77a?auto=format&fit=crop&w=600&q=80"
-                    }
-                  />
+
+                {/* Minimal Tech Architecture Card (Vector-only, Zero Broken Images) */}
+                <div className="mega-action-card">
                   <div>
-                    <span>Technical Architecture</span>
-                    <strong>
-                      Explore {activeMega} Specs <span>→</span>
-                    </strong>
+                    <div className="mega-action-card__badge">
+                      <Zap size={12} className="text-orange-500 fill-orange-500" />
+                      <span>Certified Engineering</span>
+                    </div>
+                    <h5 className="mega-action-card__title">
+                      {activeMega}
+                    </h5>
+                    <p className="mega-action-card__desc">
+                      Dyno-verified fitment, high-voltage schematics, and door-to-door Nepal express dispatch.
+                    </p>
                   </div>
-                </AppLink>
+                  <AppLink
+                    className="mega-action-card__btn"
+                    onClick={() => setActiveMega("")}
+                    to={`/search?subcategory=${encodeURIComponent(activeMega)}`}
+                  >
+                    <span>Explore All {activeMega}</span>
+                    <ArrowRight size={14} />
+                  </AppLink>
+                </div>
               </div>
             </div>
           )}
