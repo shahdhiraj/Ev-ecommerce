@@ -4,20 +4,30 @@
 @theme {
   --color-brand: #f58220;
   --color-brand-hover: #dd6c10;
+  --color-brand-active: #c2410c;
   --color-brand-soft: #fff3e8;
   --color-brand-cyan: #f58220;
-  --color-ink: #151b2d;
+  --color-brand-glow: rgba(245, 130, 32, 0.18);
+  --color-charcoal-deep: #090d14;
+  --color-charcoal-ink: #0f172a;
+  --color-charcoal-subtle: #334155;
+  --color-charcoal-muted: #64748b;
+  --color-charcoal-border: #e2e8f0;
+  --color-charcoal-bg: #f8fafc;
+  --color-ink: #0f172a;
   --color-muted: #64748b;
   --color-surface: #ffffff;
-  --color-surface-soft: #f7f8fa;
-  --color-border: #e8ecf1;
-  --color-success: #16845b;
-  --color-warning: #d89a24;
-  --color-error: #dc3545;
+  --color-surface-soft: #f8fafc;
+  --color-border: #e2e8f0;
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+  --color-error: #ef4444;
   --font-heading: 'Plus Jakarta Sans', sans-serif;
   --font-body: 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --radius-button: 0.75rem;
   --radius-control: 0.875rem;
-  --radius-card: 1.25rem;
+  --radius-card: 1.125rem;
   --radius-panel: 1.5rem;
 }
 
