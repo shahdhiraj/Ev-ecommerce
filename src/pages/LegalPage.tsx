@@ -183,7 +183,7 @@ export function LegalPage() {
                 </p>
                 <div className="legal-contact-box">
                   <strong>ABC EV PART Privacy & Compliance Desk</strong>
-                  <p>Email: privacy@abcevpart.np</p>
+                  <p>Email: privacy@abcevpart.com.np</p>
                   <p>Physical Address: Lazimpat, Kathmandu 44600, Nepal</p>
                 </div>
               </section>

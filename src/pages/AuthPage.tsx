@@ -39,7 +39,7 @@ export function AuthPage() {
   const [agreeTerms, setAgreeTerms] = useState(true)
 
   // Form states
-  const [email, setEmail] = useState("aayush.shrestha@abcevpart.np")
+  const [email, setEmail] = useState("aayush.shrestha@abcevpart.com.np")
   const [password, setPassword] = useState("AbcEV#2026")
   const [fullName, setFullName] = useState("")
   const [phoneNumber, setPhoneNumber] = useState("+977 9841234567")
@@ -82,7 +82,7 @@ export function AuthPage() {
         setEmail("admin@abcevpart.com.np")
         setPassword("AbcEV#2026")
       } else {
-        setEmail("aayush.shrestha@abcevpart.np")
+        setEmail("aayush.shrestha@abcevpart.com.np")
         setPassword("AbcEV#2026")
       }
     }
@@ -91,7 +91,7 @@ export function AuthPage() {
   const handleInstantRoleLogin = async (role: "customer" | "owner") => {
     setLoading(true)
     setRoleTab(role)
-    const targetEmail = role === "owner" ? "admin@abcevpart.com.np" : "aayush.shrestha@abcevpart.np"
+    const targetEmail = role === "owner" ? "admin@abcevpart.com.np" : "aayush.shrestha@abcevpart.com.np"
     const targetPwd = "AbcEV#2026"
     setEmail(targetEmail)
     setPassword(targetPwd)
@@ -139,7 +139,7 @@ export function AuthPage() {
         fullName.trim() || (roleTab === "owner" ? "Store Owner" : "Aayush Shrestha")
       await registerUser({
         fullName: registeredName,
-        email: email.trim() || (roleTab === "owner" ? "admin@abcevpart.com.np" : "aayush.shrestha@abcevpart.np"),
+        email: email.trim() || (roleTab === "owner" ? "admin@abcevpart.com.np" : "aayush.shrestha@abcevpart.com.np"),
         phone: phoneNumber.trim() || "+977 9841234567",
         role: roleTab,
       })
@@ -279,7 +279,7 @@ export function AuthPage() {
                   id="login-email"
                   type="email"
                   required
-                  placeholder={roleTab === "owner" ? "admin@abcevpart.com.np" : "aayush.shrestha@abcevpart.np"}
+                  placeholder={roleTab === "owner" ? "admin@abcevpart.com.np" : "aayush.shrestha@abcevpart.com.np"}
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="auth-input pl-11 h-12 w-full text-sm"

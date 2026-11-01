@@ -635,7 +635,7 @@ export function StorefrontShell() {
               </div>
               <div className="dash-profile-meta">
                 <div className="name">{user.fullName || "Aayush Shrestha"}</div>
-                <div className="email">{user.email || "aayush.shrestha@abcevpart.np"}</div>
+                <div className="email">{user.email || "aayush.shrestha@abcevpart.com.np"}</div>
                 <div className="dash-profile-badge">
                   <Check size={10} />
                   <span>{isOwner ? "Owner & Vendor" : "Nepal Verified"}</span>

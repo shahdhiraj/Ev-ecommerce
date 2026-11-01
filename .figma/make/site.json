@@ -1,7 +1,12 @@
 {
-  "description": "Delivers a premium, intuitive e-commerce platform with sleek design and seamless shopping, enhancing user experience for discerning online buyers.",
+  "title": "ABC EV PART | High-Performance EV Parts & Power Electronics Nepal",
+  "description": "Nepal's premier store for authentic high-voltage EV components, axial flux motors, SiC inverters, LFP battery systems, and charging infrastructure. Delivered across all 7 provinces with 13% Nepal VAT included.",
+  "language": "en",
+  "icons": {
+    "icon": "/favicon.svg"
+  },
   "robots": {
-    "index": false
+    "index": true
   },
   "accessibility": {
     "addBypassLinks": false,

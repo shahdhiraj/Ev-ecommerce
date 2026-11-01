@@ -60,7 +60,7 @@ export function CheckoutPage() {
 
   // Step 1: Contact State
   const [email, setEmail] = useState(
-    user.email || "aayush.shrestha@abcevpart.np",
+    user.email || "aayush.shrestha@abcevpart.com.np",
   )
   const [phone, setPhone] = useState(user.phone || "+977 9841234567")
   const [emailError, setEmailError] = useState("")

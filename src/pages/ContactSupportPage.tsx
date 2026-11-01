@@ -270,7 +270,7 @@ export function ContactSupportPage() {
               <div>
                 <strong>Concierge Email Support</strong>
                 <span className="block text-slate-700 font-medium">
-                  support@abcevpart.np
+                  support@abcevpart.com.np
                 </span>
                 <small className="text-slate-500">
                   Average response time: &lt; 2 hours
