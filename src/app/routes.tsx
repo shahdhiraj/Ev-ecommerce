@@ -1,6 +1,7 @@
 import { createBrowserRouter } from "react-router"
 import { StorefrontShell } from "../components/StorefrontShell"
 import { HomePage } from "../pages/HomePage"
+import { MobileAppPage } from "../pages/MobileAppPage"
 import { PlaceholderPage } from "../pages/PlaceholderPage"
 import { GlobalErrorBoundary } from "../components/GlobalErrorBoundary"
 
@@ -13,17 +14,11 @@ export const router = createBrowserRouter([
       { index: true, Component: HomePage },
       {
         path: "app",
-        lazy: () =>
-          import("../pages/MobileAppPage").then((m) => ({
-            Component: m.MobileAppPage,
-          })),
+        Component: MobileAppPage,
       },
       {
         path: "mobile-app",
-        lazy: () =>
-          import("../pages/MobileAppPage").then((m) => ({
-            Component: m.MobileAppPage,
-          })),
+        Component: MobileAppPage,
       },
       {
         path: "categories",

@@ -42,6 +42,7 @@ import {
   Moon,
   Volume2,
   VolumeX,
+  Globe,
 } from "lucide-react"
 import { useCommerce } from "../lib/commerceContext"
 import { catalogue, type Product } from "../data/catalog"
@@ -50,7 +51,11 @@ import { formatNpr } from "../lib/search"
 type DeviceType = "iphone" | "samsung" | "canvas"
 type TabType = "home" | "categories" | "deals" | "cart" | "profile"
 
-export function MobileAppPage() {
+export interface MobileAppPageProps {
+  onSwitchToWebStore?: () => void
+}
+
+export function MobileAppPage({ onSwitchToWebStore }: MobileAppPageProps = {}) {
   const navigate = useNavigate()
   const commerce = useCommerce()
 
@@ -543,6 +548,24 @@ export function MobileAppPage() {
                   <button
                     type="button"
                     className={`mobile-header-icon-btn ${isDarkMode ? "bg-slate-900 border-slate-800 text-slate-300" : ""}`}
+                    onClick={() => {
+                      if (onSwitchToWebStore) {
+                        onSwitchToWebStore()
+                      } else {
+                        sessionStorage.setItem("prefer-web-store", "true")
+                        navigate("/")
+                      }
+                      notify("Switched to Full Web Storefront")
+                    }}
+                    title="Switch to Web Storefront"
+                    aria-label="Switch to Web Storefront"
+                  >
+                    <Globe size={16} className="text-orange-500" />
+                  </button>
+
+                  <button
+                    type="button"
+                    className={`mobile-header-icon-btn ${isDarkMode ? "bg-slate-900 border-slate-800 text-slate-300" : ""}`}
                     onClick={() => setNotifSheetOpen(true)}
                     title="Notifications"
                   >
@@ -767,10 +790,17 @@ export function MobileAppPage() {
                     </div>
 
                     <div className="mobile-app-grid">
-                      {filteredProducts.slice(0, 6).map((product) => {
+                      {filteredProducts.slice(0, 8).map((product) => {
                         const isSaved = wishlist.has(product.id)
                         return (
-                          <article key={product.id} className={`mobile-app-card ${isDarkMode ? "bg-slate-900 border-slate-800" : ""}`}>
+                          <article
+                            key={product.id}
+                            className={`mobile-app-card ${isDarkMode ? "bg-slate-900 border-slate-800" : ""} cursor-pointer`}
+                            onClick={() => {
+                              setQuickBuyProduct(product)
+                              setQuickBuyQty(1)
+                            }}
+                          >
                             <div className="mobile-app-card-img-wrap">
                               <button
                                 type="button"
@@ -801,7 +831,10 @@ export function MobileAppPage() {
                                 <button
                                   type="button"
                                   className="mobile-app-card-add-btn"
-                                  onClick={() => handleQuickAdd(product)}
+                                  onClick={(e) => {
+                                    e.stopPropagation()
+                                    handleQuickAdd(product)
+                                  }}
                                   title="Add to cart"
                                 >
                                   <Plus size={16} />
@@ -866,7 +899,14 @@ export function MobileAppPage() {
                   {/* Category Results Grid */}
                   <div className="mobile-app-grid">
                     {filteredProducts.map((product) => (
-                      <article key={product.id} className={`mobile-app-card ${isDarkMode ? "bg-slate-900 border-slate-800" : ""}`}>
+                      <article
+                        key={product.id}
+                        className={`mobile-app-card ${isDarkMode ? "bg-slate-900 border-slate-800" : ""} cursor-pointer`}
+                        onClick={() => {
+                          setQuickBuyProduct(product)
+                          setQuickBuyQty(1)
+                        }}
+                      >
                         <div className="mobile-app-card-img-wrap">
                           <img src={product.image} alt={product.name} />
                           <span className="absolute bottom-2 left-2 bg-black/70 backdrop-blur-xs text-white text-[9px] font-bold px-1.5 py-0.5 rounded">
@@ -883,7 +923,11 @@ export function MobileAppPage() {
                             <button
                               type="button"
                               className="mobile-app-card-add-btn"
-                              onClick={() => handleQuickAdd(product)}
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                handleQuickAdd(product)
+                              }}
+                              title="Add to cart"
                             >
                               <Plus size={16} />
                             </button>
@@ -1182,6 +1226,26 @@ export function MobileAppPage() {
                       </div>
                       <ChevronRight size={14} />
                     </Link>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (onSwitchToWebStore) {
+                          onSwitchToWebStore()
+                        } else {
+                          sessionStorage.setItem("prefer-web-store", "true")
+                          navigate("/")
+                        }
+                        notify("Switched to Full Web Storefront")
+                      }}
+                      className="w-full p-3 flex items-center justify-between text-left hover:bg-slate-50/50 text-slate-800 dark:text-slate-200 font-semibold"
+                    >
+                      <div className="flex items-center gap-2.5">
+                        <Globe size={15} className="text-orange-500" />
+                        <span>Switch to Full Web Storefront</span>
+                      </div>
+                      <ChevronRight size={14} className="text-slate-400" />
+                    </button>
                   </div>
                 </div>
               )}
@@ -1254,6 +1318,104 @@ export function MobileAppPage() {
             {/* ================================================================
                 5. MODALS & BOTTOM SHEETS
                 ================================================================ */}
+            {/* Quick Buy & Component Specs Bottom Sheet */}
+            {quickBuyProduct && (
+              <>
+                <div
+                  className="mobile-bottom-sheet-backdrop"
+                  onClick={() => setQuickBuyProduct(null)}
+                />
+                <div className={`mobile-bottom-sheet ${isDarkMode ? "bg-slate-900 text-white" : "bg-white text-slate-900"}`}>
+                  <div className="mobile-sheet-drag-handle" />
+                  <div className="flex items-start justify-between gap-3 mb-3">
+                    <div className="flex gap-3 min-w-0">
+                      <img
+                        src={quickBuyProduct.image}
+                        alt={quickBuyProduct.name}
+                        className="w-18 h-18 rounded-xl object-cover bg-slate-100 border border-slate-200 shrink-0"
+                      />
+                      <div className="min-w-0">
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-orange-500">
+                          {quickBuyProduct.brand} · {quickBuyProduct.voltage}
+                        </span>
+                        <h4 className="text-xs font-bold leading-tight mt-0.5 line-clamp-2">
+                          {quickBuyProduct.name}
+                        </h4>
+                        <div className="text-sm font-extrabold text-orange-600 mt-1">
+                          {formatNpr(quickBuyProduct.price)}
+                        </div>
+                        <span className="text-[10px] text-slate-400">13% Nepal VAT Included</span>
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setQuickBuyProduct(null)}
+                      className="p-1 text-slate-400 hover:text-slate-600"
+                    >
+                      <X size={18} />
+                    </button>
+                  </div>
+
+                  <p className="text-xs text-slate-500 leading-relaxed mb-3">
+                    {quickBuyProduct.description}
+                  </p>
+
+                  {/* Quantity selector & Stock */}
+                  <div className="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 mb-3 text-xs">
+                    <div className="flex items-center gap-2">
+                      <span className="font-bold text-slate-700 dark:text-slate-200">Quantity</span>
+                      <span className="text-[10px] text-emerald-600 font-semibold">(In Stock, Tribhuvan Hub)</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <button
+                        type="button"
+                        onClick={() => setQuickBuyQty(Math.max(1, quickBuyQty - 1))}
+                        className="w-7 h-7 rounded-lg bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 flex items-center justify-center font-bold text-slate-700 dark:text-white"
+                      >
+                        <Minus size={13} />
+                      </button>
+                      <span className="w-6 text-center font-bold text-xs">{quickBuyQty}</span>
+                      <button
+                        type="button"
+                        onClick={() => setQuickBuyQty(quickBuyQty + 1)}
+                        className="w-7 h-7 rounded-lg bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 flex items-center justify-center font-bold text-slate-700 dark:text-white"
+                      >
+                        <Plus size={13} />
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Actions: Add to Cart & Instant Checkout */}
+                  <div className="grid grid-cols-2 gap-2">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        addToCart(quickBuyProduct.name, { sku: quickBuyProduct.id, quantity: quickBuyQty })
+                        notify(`Added ${quickBuyQty}x ${quickBuyProduct.name} to Cart`)
+                        setQuickBuyProduct(null)
+                      }}
+                      className="py-2.5 px-3 rounded-xl border border-orange-500 text-orange-600 font-bold text-xs flex items-center justify-center gap-1.5 hover:bg-orange-50 dark:hover:bg-orange-950/40"
+                    >
+                      <ShoppingBag size={15} />
+                      <span>Add to Cart</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        addToCart(quickBuyProduct.name, { sku: quickBuyProduct.id, quantity: quickBuyQty })
+                        setQuickBuyProduct(null)
+                        navigate("/checkout")
+                      }}
+                      className="py-2.5 px-3 rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-xs"
+                    >
+                      <Zap size={15} className="fill-white" />
+                      <span>Buy Now</span>
+                    </button>
+                  </div>
+                </div>
+              </>
+            )}
+
             {/* Delivery Location Picker Sheet */}
             {locationSheetOpen && (
               <>

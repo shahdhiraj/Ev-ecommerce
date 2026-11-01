@@ -48,6 +48,7 @@ import { Outlet, useLocation, useNavigate } from "react-router"
 import { catalogue } from "../data/catalog"
 import { useCommerce } from "../lib/commerceContext"
 import { formatNpr, searchCatalogue, trackCommerceEvent } from "../lib/search"
+import { MobileAppPage } from "../pages/MobileAppPage"
 import { AppLink, Button, Heading, IconButton, Input } from "./ui"
 
 export type StorefrontContext = ReturnType<typeof useCommerce> & {
@@ -219,6 +220,35 @@ export function StorefrontShell() {
   const [soundAlerts, setSoundAlerts] = useState(true)
   const [selectedHub, setSelectedHub] = useState("Kathmandu Central Hub (Bagmati)")
 
+  // Automatic mobile device detection to show Mobile App UI automatically on phones
+  const [preferWebStore, setPreferWebStore] = useState(() => {
+    try {
+      return sessionStorage.getItem("prefer-web-store") === "true"
+    } catch {
+      return false
+    }
+  })
+
+  const [isMobileDevice, setIsMobileDevice] = useState(() => {
+    if (typeof window === "undefined") return false
+    return (
+      window.innerWidth <= 768 ||
+      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+    )
+  })
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobileDevice(
+        window.innerWidth <= 768 ||
+        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+      )
+    }
+    checkMobile()
+    window.addEventListener("resize", checkMobile, { passive: true })
+    return () => window.removeEventListener("resize", checkMobile)
+  }, [])
+
   const storefrontContext = useMemo(
     () => ({
       ...commerce,
@@ -357,8 +387,20 @@ export function StorefrontShell() {
     location.pathname === "/app" ||
     location.pathname === "/mobile-app"
 
-  if (isMobileAppRoute) {
-    return <Outlet />
+  // Automatically show Mobile App UI on mobile devices when accessing storefront root /
+  const shouldAutoShowMobileApp =
+    isMobileAppRoute ||
+    (location.pathname === "/" && isMobileDevice && !preferWebStore)
+
+  if (shouldAutoShowMobileApp) {
+    return (
+      <MobileAppPage
+        onSwitchToWebStore={() => {
+          sessionStorage.setItem("prefer-web-store", "true")
+          setPreferWebStore(true)
+        }}
+      />
+    )
   }
 
   if (isDashboardRoute) {
@@ -1283,17 +1325,6 @@ export function StorefrontShell() {
               </>
             )}
 
-            {/* Direct Mobile App UI Switcher Pill */}
-            <AppLink
-              to="/app"
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-orange-500/10 hover:bg-orange-500 text-orange-600 hover:text-white font-bold text-xs border border-orange-500/25 transition-all shadow-xs max-md:hidden"
-              title="Experience Native Mobile App UI & Simulator"
-            >
-              <Smartphone size={15} />
-              <span>Mobile App</span>
-              <span className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-ping" />
-            </AppLink>
-
             <button
               className={`header-action-btn max-md:hidden ${
                 location.pathname === "/wishlist" ? "is-active" : ""
@@ -1556,10 +1587,15 @@ export function StorefrontShell() {
 
             {/* Mobile App Mode Banner in Drawer */}
             <div className="p-3 bg-gradient-to-r from-orange-500/10 via-amber-500/10 to-orange-500/10 border-b border-orange-200/50">
-              <AppLink
-                onClick={() => setMenuOpen(false)}
-                to="/app"
-                className="flex items-center justify-between p-2.5 rounded-xl bg-white border border-orange-200 shadow-xs hover:border-orange-400 transition-all"
+              <button
+                type="button"
+                onClick={() => {
+                  setMenuOpen(false)
+                  sessionStorage.removeItem("prefer-web-store")
+                  setPreferWebStore(false)
+                  navigate("/")
+                }}
+                className="w-full text-left flex items-center justify-between p-2.5 rounded-xl bg-white border border-orange-200 shadow-xs hover:border-orange-400 transition-all cursor-pointer"
               >
                 <div className="flex items-center gap-2.5">
                   <div className="w-8 h-8 rounded-lg bg-orange-500 text-white flex items-center justify-center shrink-0">
@@ -1574,7 +1610,7 @@ export function StorefrontShell() {
                   </div>
                 </div>
                 <ChevronRight size={16} className="text-orange-500" />
-              </AppLink>
+              </button>
             </div>
 
             <div className="mobile-nav">
@@ -1795,16 +1831,21 @@ export function StorefrontShell() {
           <span>Explore</span>
         </AppLink>
 
-        <AppLink
-          to="/app"
-          className={`mobile-bottom-nav__item ${location.pathname === "/app" ? "is-active text-orange-600 font-bold" : ""}`}
+        <button
+          type="button"
+          onClick={() => {
+            sessionStorage.removeItem("prefer-web-store")
+            setPreferWebStore(false)
+            navigate("/")
+          }}
+          className={`mobile-bottom-nav__item ${!preferWebStore ? "is-active text-orange-600 font-bold" : ""}`}
         >
           <div className="relative inline-flex items-center justify-center">
             <Smartphone size={20} className="text-orange-500" />
             <span className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-ping absolute -top-0.5 -right-0.5" />
           </div>
           <span className="font-bold text-orange-600">App UI</span>
-        </AppLink>
+        </button>
 
         <AppLink
           to="/wishlist"
