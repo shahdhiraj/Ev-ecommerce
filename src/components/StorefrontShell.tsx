@@ -362,6 +362,17 @@ export function StorefrontShell() {
         <a href="#main-content" className="skip-to-content">
           Skip to main content
         </a>
+        {/* Mobile Backdrop for Dashboard Sidebar */}
+        {!sidebarCollapsed && (
+          <div
+            className="dash-sidebar-backdrop lg:hidden"
+            onClick={toggleSidebar}
+            aria-label="Close sidebar overlay"
+            role="button"
+            tabIndex={0}
+          />
+        )}
+
         {/* BIG LEFT SIDEBAR (Matching reference image media_1793455843041_097fa8bf.jpg) */}
         <aside
           className={`dash-app-sidebar ${sidebarCollapsed ? "is-collapsed" : ""}`}
@@ -1043,16 +1054,8 @@ export function StorefrontShell() {
       {/* Modern Luxury Sticky Header */}
       <header className={`modern-header ${scrolled ? "is-scrolled" : ""}`}>
         <div className="container modern-header__inner">
-          {/* Brand */}
+          {/* Brand - Left side on mobile and desktop */}
           <div className="modern-header__brand">
-            <IconButton
-              className="mobile-menu-button hidden max-md:inline-flex md:hidden"
-              label="Open menu"
-              onClick={() => setMenuOpen(true)}
-            >
-              <Menu size={22} />
-            </IconButton>
-
             <AppLink
               aria-label="ABC EV PART"
               className="clean-brand"
@@ -1192,10 +1195,10 @@ export function StorefrontShell() {
 
           {/* Clean Modern Actions */}
           <div className="modern-header__actions">
-            {/* Minimal Clean Authentication & Account Actions */}
+            {/* Minimal Clean Authentication & Account Actions (Desktop only - Mobile uses bottom nav & drawer) */}
             {!user.isAuthenticated ? (
               <button
-                className={`header-action-btn ${
+                className={`header-action-btn max-md:hidden ${
                   location.pathname === "/login" || location.pathname === "/signin" ? "is-active" : ""
                 }`}
                 onClick={() => navigate("/login")}
@@ -1209,7 +1212,7 @@ export function StorefrontShell() {
               <>
                 {isOwner && (
                   <button
-                    className={`header-action-btn header-action-btn--owner ${
+                    className={`header-action-btn header-action-btn--owner max-md:hidden ${
                       location.pathname.startsWith("/owner") || location.pathname.startsWith("/admin")
                         ? "is-active"
                         : ""
@@ -1224,7 +1227,7 @@ export function StorefrontShell() {
                 )}
 
                 <button
-                  className={`header-action-btn ${
+                  className={`header-action-btn max-md:hidden ${
                     location.pathname.startsWith("/account") ? "is-active" : ""
                   }`}
                   onClick={() => navigate("/account")}
@@ -1240,11 +1243,12 @@ export function StorefrontShell() {
             )}
 
             <button
-              className={`header-action-btn ${
+              className={`header-action-btn max-md:hidden ${
                 location.pathname === "/wishlist" ? "is-active" : ""
               }`}
               onClick={() => navigate("/wishlist")}
               type="button"
+              title="Saved in Garage / Wishlist"
             >
               <Heart size={20} />
               <span className="btn-label">Wishlist</span>
@@ -1259,6 +1263,7 @@ export function StorefrontShell() {
               }`}
               onClick={() => setCartOpen(true)}
               type="button"
+              title="Shopping Cart"
             >
               <ShoppingBag size={20} />
               <span className="btn-label">Cart</span>
@@ -1268,6 +1273,15 @@ export function StorefrontShell() {
                 </span>
               )}
             </button>
+
+            {/* Clean Burger Menu Button - Positioned on the RIGHT on mobile */}
+            <IconButton
+              className="mobile-menu-button hidden max-md:inline-flex md:hidden"
+              label="Open menu"
+              onClick={() => setMenuOpen(true)}
+            >
+              <Menu size={22} />
+            </IconButton>
           </div>
         </div>
 

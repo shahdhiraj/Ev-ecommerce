@@ -130,9 +130,8 @@ export function AllCategoriesPage() {
                 loading="lazy"
                 onError={(e) => {
                   const img = e.currentTarget
-                  if (!img.src.includes("carbon-aero.jpg")) {
-                    img.src = "/images/subsystems/carbon-aero.jpg"
-                  }
+                  img.onerror = null
+                  img.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='260' viewBox='0 0 400 260'%3E%3Crect width='400' height='260' fill='%230f172a'/%3E%3Ccircle cx='200' cy='120' r='48' fill='%231e293b'/%3E%3Cpath d='M200 95 L215 125 L195 125 L205 145 L185 115 L200 115 Z' fill='%23f58220'/%3E%3Ctext x='50%25' y='190' font-family='sans-serif' font-size='13' font-weight='700' fill='%2394a3b8' text-anchor='middle'%3EEV PERFORMANCE COMPONENT%3C/text%3E%3C/svg%3E"
                 }}
               />
               <div className="cat-card-overlay">

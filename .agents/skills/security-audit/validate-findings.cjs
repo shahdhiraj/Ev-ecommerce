@@ -604,13 +604,13 @@ function loadSchema(schemaPath) {
 function readFileWithinLimit(file) {
   const noFollow = fs.constants.O_NOFOLLOW;
   const nonBlock = fs.constants.O_NONBLOCK;
-  if (!Number.isInteger(noFollow) || noFollow === 0 || !Number.isInteger(nonBlock) || nonBlock === 0) {
+  if (process.platform !== "win32" && (!Number.isInteger(noFollow) || noFollow === 0 || !Number.isInteger(nonBlock) || nonBlock === 0)) {
     throw new SafeInputError("OS no-follow and nonblocking input protection is unavailable");
   }
 
   let descriptor;
   try {
-    descriptor = fs.openSync(file, fs.constants.O_RDONLY | noFollow | nonBlock);
+    descriptor = fs.openSync(file, process.platform === "win32" ? fs.constants.O_RDONLY : (fs.constants.O_RDONLY | noFollow | nonBlock));
   } catch (error) {
     if (error && (error.code === "ELOOP" || error.code === "EMLINK")) {
       throw new SafeInputError("input must not be a symlink");

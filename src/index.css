@@ -5656,15 +5656,33 @@
   }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 767px) {
+  /* Clean Mobile Burger Menu - Positioned cleanly on the RIGHT */
   .mobile-menu-button {
     display: inline-flex !important;
     align-items: center;
     justify-content: center;
-    min-width: 44px !important;
-    min-height: 44px !important;
+    width: 42px !important;
+    height: 42px !important;
+    min-width: 42px !important;
+    min-height: 42px !important;
+    border-radius: 10px !important;
+    background: #f8fafc !important;
+    border: 1px solid #e2e8f0 !important;
+    color: #1e293b !important;
+    padding: 0 !important;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+    transition: all 0.2s ease;
   }
 
+  .mobile-menu-button:hover,
+  .mobile-menu-button:active {
+    background: #fff7ed !important;
+    border-color: #f58220 !important;
+    color: #f58220 !important;
+  }
+
+  /* Realignment: 2-Row Layout on Mobile */
   .modern-header__inner {
     display: flex;
     flex-wrap: wrap;
@@ -5674,16 +5692,48 @@
     min-height: auto;
   }
 
+  /* Row 1 Left: Brand Logo */
   .modern-header__brand {
     order: 1;
+    display: flex;
+    align-items: center;
     gap: 8px;
   }
 
+  /* Row 1 Right: Cart & Burger Menu only */
   .modern-header__actions {
     order: 2;
-    gap: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: auto;
   }
 
+  /* Remove redundant desktop buttons from mobile top header (available in bottom nav and drawer) */
+  .modern-header__actions .header-action-btn:not(.header-action-btn--cart) {
+    display: none !important;
+  }
+
+  .header-action-btn--cart {
+    padding: 0 !important;
+    width: 42px !important;
+    height: 42px !important;
+    min-width: 42px !important;
+    min-height: 42px !important;
+    border-radius: 10px !important;
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  .header-action-btn--cart:hover {
+    border-color: #f58220 !important;
+    color: #f58220 !important;
+  }
+
+  /* Row 2: Clean Search Bar Full Width */
   .clean-search-wrap {
     order: 3;
     width: 100%;
@@ -5696,20 +5746,63 @@
   }
 
   .btn-label {
-    display: none;
-  }
-
-  .header-action-btn {
-    padding: 0;
-    width: 44px;
-    height: 44px;
-    min-width: 44px;
-    min-height: 44px;
-    justify-content: center;
+    display: none !important;
   }
 
   .clean-brand__name {
     font-size: 1.15rem;
+  }
+
+  /* ==========================================================================
+     MOBILE CARDS: 1 OR 2 COLUMN RESPONSIVE GRID (ZERO CRAMPED TRUNCATION)
+     ========================================================================== */
+  .clean-category-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 12px !important;
+  }
+
+  .clean-cat-card {
+    border-radius: 14px !important;
+  }
+
+  .clean-cat-card__img-wrap {
+    height: 125px !important;
+  }
+
+  .clean-cat-card__content {
+    padding: 10px 12px !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 4px !important;
+  }
+
+  .clean-cat-card__content h3 {
+    font-size: 0.88rem !important;
+    line-height: 1.25 !important;
+    word-break: break-word !important;
+  }
+
+  .clean-cat-card__link {
+    font-size: 0.74rem !important;
+  }
+
+  /* Mobile Product Grids & Cards: 2 Columns */
+  .product-grid,
+  .search-results-grid--grid,
+  .wishlist-grid,
+  .pdp-related-grid,
+  .recently-viewed > div:last-child {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 12px 10px !important;
+  }
+
+  /* Product Carousel on Mobile */
+  .product-carousel {
+    grid-auto-columns: min(78vw, 260px) !important;
+    gap: 12px !important;
+    padding-bottom: 6px !important;
   }
 
   .hero-fitment-bar {
@@ -5754,9 +5847,72 @@
   }
 }
 
-@media (min-width: 641px) {
+@media (max-width: 380px) {
+  /* Extra Small Mobile: 1 Column Card Grid */
+  .clean-category-grid,
+  .product-grid,
+  .search-results-grid--grid,
+  .wishlist-grid {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+
+  .clean-cat-card__img-wrap {
+    height: 150px !important;
+  }
+
+  .clean-cat-card__content {
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+  }
+}
+
+@media (min-width: 768px) {
   .mobile-menu-button {
     display: none !important;
+  }
+}
+
+/* ==========================================================================
+   DESKTOP 16-GRID LAYOUT SYSTEM (2-GRID LEFT & RIGHT MARGIN/PADDING)
+   ========================================================================== */
+@media (min-width: 1025px) {
+  /* Global Container 16-Grid Proportions:
+     16 Columns Total
+     Left: 2 columns margin/padding (12.5%)
+     Right: 2 columns margin/padding (12.5%)
+     Content: 12 columns center (75%)
+  */
+  .container {
+    width: 100% !important;
+    max-width: 1680px !important;
+    padding-inline: clamp(2.5rem, calc(100vw * 2 / 16), 8rem) !important;
+    margin-inline: auto !important;
+  }
+
+  /* Utility 16-column grid classes */
+  .desktop-16-grid {
+    display: grid !important;
+    grid-template-columns: repeat(16, minmax(0, 1fr)) !important;
+    column-gap: 24px !important;
+  }
+
+  /* Center content spanning the 12 center columns with 2 columns margin each side */
+  .desktop-16-main {
+    grid-column: 3 / span 12 !important;
+  }
+
+  .desktop-16-full {
+    grid-column: 1 / span 16 !important;
+  }
+
+  .desktop-16-left-rail {
+    grid-column: 1 / span 2 !important;
+  }
+
+  .desktop-16-right-rail {
+    grid-column: 15 / span 2 !important;
   }
 }
 
