@@ -61,7 +61,17 @@ export function ProductCard({
           />
         </button>
 
-        <img alt={product.name} loading="lazy" src={product.image} />
+        <img
+          alt={product.name}
+          loading="lazy"
+          src={product.image}
+          onError={(e) => {
+            const img = e.currentTarget
+            if (!img.src.includes("powertrain-motor.jpg")) {
+              img.src = "/images/subsystems/powertrain-motor.jpg"
+            }
+          }}
+        />
 
         <Button
           className="quick-view-trigger"

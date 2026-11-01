@@ -124,7 +124,17 @@ export function AllCategoriesPage() {
         {categories.map((cat) => (
           <article key={cat.name} className="directory-cat-card">
             <div className="cat-card-visual">
-              <img src={cat.image} alt={cat.name} />
+              <img
+                src={cat.image}
+                alt={cat.name}
+                loading="lazy"
+                onError={(e) => {
+                  const img = e.currentTarget
+                  if (!img.src.includes("carbon-aero.jpg")) {
+                    img.src = "/images/subsystems/carbon-aero.jpg"
+                  }
+                }}
+              />
               <div className="cat-card-overlay">
                 <span className="cat-icon-badge">{cat.icon}</span>
                 <span className="cat-items-badge">

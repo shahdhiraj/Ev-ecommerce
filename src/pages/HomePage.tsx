@@ -69,7 +69,7 @@ const evSubcategories = [
   },
   {
     name: "Aero & Carbon Performance",
-    image: "/images/subsystems/aero-splitter.jpg",
+    image: "/images/subsystems/carbon-aero.jpg",
     query: "Aero & Carbon Performance",
   },
 ]
@@ -460,7 +460,17 @@ export function HomePage() {
               to={`/search?subcategory=${encodeURIComponent(cat.query)}`}
             >
               <div className="clean-cat-card__img-wrap">
-                <img alt={cat.name} loading="lazy" src={cat.image} />
+                <img
+                  alt={cat.name}
+                  loading="lazy"
+                  src={cat.image}
+                  onError={(e) => {
+                    const img = e.currentTarget
+                    if (!img.src.includes("carbon-aero.jpg")) {
+                      img.src = "/images/subsystems/carbon-aero.jpg"
+                    }
+                  }}
+                />
               </div>
               <div className="clean-cat-card__content">
                 <h3>{cat.name}</h3>
