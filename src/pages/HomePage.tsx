@@ -158,6 +158,7 @@ export function HomePage() {
   const [selectedTab, setSelectedTab] =
     useState<"all" | "powertrain" | "battery" | "charging" | "chassis">("all")
   const [activeHeroIdx, setActiveHeroIdx] = useState(0)
+  const [addedId, setAddedId] = useState<string | null>(null)
   const currentHero = heroFlagships[activeHeroIdx]
 
   useEffect(() => {
@@ -223,7 +224,7 @@ export function HomePage() {
             </div>
 
             <Heading as="h1" className="hero-headline">
-              High-Performance EV Parts. <br />
+              High-Performance EV Parts.{" "}
               <span className="hero-headline__accent">Delivered Across Nepal.</span>
             </Heading>
             <p className="hero__copy">
@@ -602,13 +603,23 @@ export function HomePage() {
 
                     <div className="card-action-btns">
                       <Button
-                        className="add-cart-btn"
-                        onClick={() =>
+                        className={`add-cart-btn ${addedId === product.id ? "is-added" : ""}`}
+                        onClick={() => {
                           addToCart(product.name, { sku: product.id })
-                        }
+                          setAddedId(product.id)
+                          setTimeout(() => setAddedId(null), 1800)
+                        }}
                         size="sm"
                       >
-                        <ShoppingBag size={15} /> Add to Cart
+                        {addedId === product.id ? (
+                          <>
+                            <Check size={15} /> Added ✓
+                          </>
+                        ) : (
+                          <>
+                            <ShoppingBag size={15} /> Add to Cart
+                          </>
+                        )}
                       </Button>
                     </div>
                   </div>

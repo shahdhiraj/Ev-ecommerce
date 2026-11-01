@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import {
   ArrowLeft,
   ArrowRight,
@@ -49,7 +49,10 @@ import { useCommerce } from "../lib/commerceContext"
 import { formatNpr, searchCatalogue, trackCommerceEvent } from "../lib/search"
 import { AppLink, Button, Heading, IconButton, Input } from "./ui"
 
-export type StorefrontContext = ReturnType<typeof useCommerce>
+export type StorefrontContext = ReturnType<typeof useCommerce> & {
+  cartOpen: boolean
+  setCartOpen: (open: boolean) => void
+}
 export type { WishlistEntry } from "../lib/commerceContext"
 
 const categories = [
@@ -214,6 +217,15 @@ export function StorefrontShell() {
   const [vatTransparency, setVatTransparency] = useState(true)
   const [soundAlerts, setSoundAlerts] = useState(true)
   const [selectedHub, setSelectedHub] = useState("Kathmandu Central Hub (Bagmati)")
+
+  const storefrontContext = useMemo(
+    () => ({
+      ...commerce,
+      cartOpen,
+      setCartOpen,
+    }),
+    [commerce, cartOpen],
+  )
 
   // Keyboard shortcut listeners (⌘K for search, ⌘B for sidebar, Escape to dismiss)
   useEffect(() => {
@@ -911,7 +923,7 @@ export function StorefrontShell() {
 
           {/* Main Content Area */}
           <main id="main-content" tabIndex={-1} className="dash-app-content focus:outline-none">
-            <Outlet context={commerce} />
+            <Outlet context={storefrontContext} />
           </main>
         </div>
 
@@ -1385,7 +1397,7 @@ export function StorefrontShell() {
 
       {/* Outlet with Full Commerce Context */}
       <main id="main-content" tabIndex={-1} className="focus:outline-none">
-        <Outlet context={commerce} />
+        <Outlet context={storefrontContext} />
       </main>
 
       {/* Clean Modern 5-Column Luxury Footer */}

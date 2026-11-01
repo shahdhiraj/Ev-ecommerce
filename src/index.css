@@ -5721,16 +5721,27 @@
     min-width: 42px !important;
     min-height: 42px !important;
     border-radius: 10px !important;
-    background: #ffffff !important;
-    border: 1px solid #e2e8f0 !important;
+    background: #0f172a !important;
+    color: #ffffff !important;
+    border: 1px solid #0f172a !important;
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
+    position: relative !important;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.15) !important;
+    transition: all 0.2s ease !important;
   }
 
-  .header-action-btn--cart:hover {
+  .header-action-btn--cart svg {
+    color: #ffffff !important;
+    stroke: #ffffff !important;
+  }
+
+  .header-action-btn--cart:hover,
+  .header-action-btn--cart:active {
+    background: #f58220 !important;
     border-color: #f58220 !important;
-    color: #f58220 !important;
+    color: #ffffff !important;
   }
 
   /* Row 2: Clean Search Bar Full Width */
@@ -5751,6 +5762,70 @@
 
   .clean-brand__name {
     font-size: 1.15rem;
+  }
+
+  /* Quick View trigger: hide on mobile to eliminate intrusive floating eye overlay */
+  .quick-view-trigger {
+    display: none !important;
+  }
+
+  /* ==========================================================================
+     FEATURED PRODUCTS: MOBILE ADD TO CART BUTTON & PRICE FIX
+     ========================================================================== */
+  .search-product-card--clean .card-bottom-row {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 8px !important;
+    padding-top: 10px !important;
+  }
+
+  .search-product-card--clean .card-price-block {
+    display: flex !important;
+    align-items: baseline !important;
+    justify-content: space-between !important;
+  }
+
+  .search-product-card--clean .card-price {
+    font-size: 1.05rem !important;
+    font-weight: 800 !important;
+    color: #0f172a !important;
+    background: none !important;
+    padding: 0 !important;
+  }
+
+  .search-product-card--clean .card-action-btns {
+    width: 100% !important;
+  }
+
+  .search-product-card--clean .add-cart-btn {
+    width: 100% !important;
+    height: 42px !important;
+    min-height: 42px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    font-size: 0.86rem !important;
+    font-weight: 700 !important;
+    border-radius: 10px !important;
+    background: #f58220 !important;
+    color: #ffffff !important;
+    border: none !important;
+    box-shadow: 0 2px 8px rgba(245, 130, 32, 0.25) !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+  }
+
+  .search-product-card--clean .add-cart-btn:hover,
+  .search-product-card--clean .add-cart-btn:active {
+    background: #dd6c10 !important;
+    transform: translateY(-1px) !important;
+  }
+
+  .search-product-card--clean .add-cart-btn.is-added {
+    background: #10b981 !important;
+    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3) !important;
   }
 
   /* ==========================================================================
@@ -5803,6 +5878,155 @@
     grid-auto-columns: min(78vw, 260px) !important;
     gap: 12px !important;
     padding-bottom: 6px !important;
+  }
+
+  /* ==========================================================================
+     HERO SECTION REDESIGN FOR MOBILE (FIT SCREEN, ZERO HORIZONTAL OVERFLOW)
+     ========================================================================== */
+  .home-hero--minimal {
+    overflow-x: hidden !important;
+  }
+
+  .home-hero--minimal .hero {
+    grid-template-columns: 1fr !important;
+    gap: 18px !important;
+    padding-block: 16px 24px !important;
+    min-height: auto !important;
+  }
+
+  .hero-eyebrow-badge {
+    font-size: 0.68rem !important;
+    padding: 4px 10px !important;
+    max-width: 100% !important;
+    white-space: normal !important;
+    text-align: center !important;
+    margin-bottom: 10px !important;
+  }
+
+  .hero-headline {
+    font-size: clamp(1.6rem, 6.8vw, 2.15rem) !important;
+    line-height: 1.18 !important;
+    letter-spacing: -0.025em !important;
+    margin-bottom: 12px !important;
+    word-break: normal !important;
+    overflow-wrap: break-word !important;
+  }
+
+  .hero__copy {
+    font-size: 0.88rem !important;
+    line-height: 1.5 !important;
+    margin-bottom: 16px !important;
+    max-width: 100% !important;
+  }
+
+  .hero__cta-group {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px !important;
+    width: 100% !important;
+    margin-bottom: 18px !important;
+  }
+
+  .hero-btn-primary,
+  .hero-btn-secondary {
+    width: 100% !important;
+    height: 44px !important;
+    min-height: 44px !important;
+    padding: 0 10px !important;
+    font-size: 0.82rem !important;
+    justify-content: center !important;
+    white-space: nowrap !important;
+    border-radius: 10px !important;
+  }
+
+  .hero-btn-primary span,
+  .hero-btn-secondary span {
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  /* Segmented Switcher Pills: Horizontal touch scroll without breaking screen */
+  .hero-switcher-tabs {
+    overflow-x: auto !important;
+    scrollbar-width: none !important;
+    -webkit-overflow-scrolling: touch !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    justify-content: flex-start !important;
+    gap: 6px !important;
+    padding: 4px !important;
+  }
+
+  .hero-switcher-tabs::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  .hero-switcher-pill {
+    flex: 0 0 auto !important;
+    white-space: nowrap !important;
+    padding: 6px 12px !important;
+    font-size: 0.78rem !important;
+  }
+
+  /* Interactive Flagship Card on Mobile */
+  .hero-featured-card--interactive {
+    border-radius: 16px !important;
+    max-width: 100% !important;
+  }
+
+  .hero-featured-media {
+    height: 190px !important;
+  }
+
+  .hero-featured-body {
+    padding: 12px 14px 14px !important;
+  }
+
+  .hero-featured-name {
+    font-size: 1.05rem !important;
+    margin-bottom: 6px !important;
+  }
+
+  .hero-specs-list {
+    gap: 4px !important;
+    margin-bottom: 10px !important;
+  }
+
+  .hero-spec-chip {
+    padding: 2px 7px !important;
+    font-size: 0.7rem !important;
+  }
+
+  .hero-featured-footer {
+    gap: 10px !important;
+    padding-top: 10px !important;
+  }
+
+  .hero-featured-price {
+    font-size: 1.1rem !important;
+  }
+
+  .hero-view-btn {
+    height: 38px !important;
+    padding: 0 14px !important;
+    font-size: 0.8rem !important;
+  }
+
+  /* Minimal Hero Across Other Pages */
+  .categories-hero-head,
+  .about-hero-section,
+  .help-hero-section {
+    padding-block: 20px 14px !important;
+    text-align: center !important;
+  }
+
+  .categories-hero-head h1,
+  .about-hero-section h1,
+  .help-hero-section h1 {
+    font-size: clamp(1.5rem, 6vw, 2rem) !important;
+    line-height: 1.2 !important;
   }
 
   .hero-fitment-bar {
