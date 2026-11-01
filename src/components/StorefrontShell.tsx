@@ -14,7 +14,9 @@ import {
   Globe,
   Heart,
   HelpCircle,
+  Home,
   KeyRound,
+  LayoutGrid,
   LogIn,
   LogOut,
   Mail,
@@ -213,22 +215,43 @@ export function StorefrontShell() {
   const [soundAlerts, setSoundAlerts] = useState(true)
   const [selectedHub, setSelectedHub] = useState("Kathmandu Central Hub (Bagmati)")
 
-  // Keyboard shortcut listeners (⌘K for search, ⌘B for sidebar)
+  // Keyboard shortcut listeners (⌘K for search, ⌘B for sidebar, Escape to dismiss)
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key === "k") {
         e.preventDefault()
-        const input = document.getElementById("dash-search-input")
+        const input = document.getElementById("dash-search-input") || document.querySelector<HTMLInputElement>(".clean-search-bar input")
         if (input) input.focus()
       }
       if ((e.metaKey || e.ctrlKey) && e.key === "b") {
         e.preventDefault()
         toggleSidebar()
       }
+      if (e.key === "Escape") {
+        setMenuOpen(false)
+        setCartOpen(false)
+        setAccountOpen(false)
+        setCompareOpen(false)
+        setSearchFocused(false)
+        setActiveMega("")
+        setSettingsModalOpen(false)
+      }
     }
     window.addEventListener("keydown", handleKeyDown)
     return () => window.removeEventListener("keydown", handleKeyDown)
   }, [toggleSidebar])
+
+  // Lock body scroll when mobile drawer, cart, or modal is active
+  useEffect(() => {
+    if (menuOpen || cartOpen || accountOpen || compareOpen || settingsModalOpen) {
+      document.body.style.overflow = "hidden"
+    } else {
+      document.body.style.overflow = ""
+    }
+    return () => {
+      document.body.style.overflow = ""
+    }
+  }, [menuOpen, cartOpen, accountOpen, compareOpen, settingsModalOpen])
 
   const [scrolled, setScrolled] = useState(false)
   const [searchFocused, setSearchFocused] = useState(false)
@@ -337,6 +360,9 @@ export function StorefrontShell() {
 
     return (
       <div className={`dash-app-layout ${isDarkMode ? "is-dark" : ""}`}>
+        <a href="#main-content" className="skip-to-content">
+          Skip to main content
+        </a>
         {/* BIG LEFT SIDEBAR (Matching reference image media_1793455843041_097fa8bf.jpg) */}
         <aside
           className={`dash-app-sidebar ${sidebarCollapsed ? "is-collapsed" : ""}`}
@@ -874,7 +900,7 @@ export function StorefrontShell() {
           </header>
 
           {/* Main Content Area */}
-          <main className="dash-app-content">
+          <main id="main-content" tabIndex={-1} className="dash-app-content focus:outline-none">
             <Outlet context={commerce} />
           </main>
         </div>
@@ -1011,6 +1037,10 @@ export function StorefrontShell() {
 
   return (
     <div className="app-shell">
+      {/* Skip to Main Content for Accessibility */}
+      <a href="#main-content" className="skip-to-content">
+        Skip to main content
+      </a>
       {/* Modern Luxury Sticky Header */}
       <header className={`modern-header ${scrolled ? "is-scrolled" : ""}`}>
         <div className="container modern-header__inner">
@@ -1319,7 +1349,7 @@ export function StorefrontShell() {
       </header>
 
       {/* Outlet with Full Commerce Context */}
-      <main>
+      <main id="main-content" tabIndex={-1} className="focus:outline-none">
         <Outlet context={commerce} />
       </main>
 
@@ -1631,6 +1661,69 @@ export function StorefrontShell() {
           </section>
         </div>
       )}
+
+      {/* Mobile Bottom Navigation Bar (Ergonomic Thumb-Zone Navigation) */}
+      <nav aria-label="Mobile Bottom Navigation" className="mobile-bottom-nav">
+        <AppLink
+          to="/"
+          className={`mobile-bottom-nav__item ${location.pathname === "/" ? "is-active" : ""}`}
+        >
+          <Home size={20} />
+          <span>Home</span>
+        </AppLink>
+
+        <AppLink
+          to="/categories"
+          className={`mobile-bottom-nav__item ${
+            location.pathname.startsWith("/categories") || location.pathname.startsWith("/search")
+              ? "is-active"
+              : ""
+          }`}
+        >
+          <LayoutGrid size={20} />
+          <span>Explore</span>
+        </AppLink>
+
+        <AppLink
+          to="/wishlist"
+          className={`mobile-bottom-nav__item ${location.pathname === "/wishlist" ? "is-active" : ""}`}
+        >
+          <div className="relative inline-flex items-center justify-center">
+            <Heart size={20} />
+            {wishlistEntries.length > 0 && (
+              <span className="mobile-bottom-nav__badge">{wishlistEntries.length}</span>
+            )}
+          </div>
+          <span>Garage</span>
+        </AppLink>
+
+        <AppLink
+          to="/cart"
+          className={`mobile-bottom-nav__item ${location.pathname === "/cart" ? "is-active" : ""}`}
+        >
+          <div className="relative inline-flex items-center justify-center">
+            <ShoppingBag size={20} />
+            {cartCount > 0 && (
+              <span className="mobile-bottom-nav__badge">{cartCount}</span>
+            )}
+          </div>
+          <span>Cart</span>
+        </AppLink>
+
+        <AppLink
+          to={user.isAuthenticated ? (user.role === "owner" ? "/owner" : "/account") : "/login"}
+          className={`mobile-bottom-nav__item ${
+            location.pathname.startsWith("/account") ||
+            location.pathname.startsWith("/owner") ||
+            location.pathname === "/login"
+              ? "is-active"
+              : ""
+          }`}
+        >
+          <UserRound size={20} />
+          <span>{user.isAuthenticated ? "Account" : "Sign In"}</span>
+        </AppLink>
+      </nav>
 
       {toast && (
         <div aria-live="polite" className="toast">
