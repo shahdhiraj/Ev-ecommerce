@@ -8257,6 +8257,45 @@ button:active:not(:disabled) {
     gap: 5px !important;
   }
 
+  /* Notification & Profile Dropdowns: Fixed positioning on mobile to prevent horizontal clipping */
+  .dash-notif-dropdown {
+    position: fixed !important;
+    top: 58px !important;
+    left: 12px !important;
+    right: 12px !important;
+    width: auto !important;
+    max-width: calc(100vw - 24px) !important;
+    z-index: 9999 !important;
+    box-shadow: 0 16px 40px rgba(15, 23, 42, 0.25) !important;
+    border-radius: 16px !important;
+  }
+
+  .dash-profile-menu-dropdown {
+    position: fixed !important;
+    top: 58px !important;
+    left: 12px !important;
+    right: 12px !important;
+    width: auto !important;
+    max-width: calc(100vw - 24px) !important;
+    z-index: 9999 !important;
+    box-shadow: 0 16px 40px rgba(15, 23, 42, 0.25) !important;
+    border-radius: 16px !important;
+  }
+
+  /* Floating Settings Button: Placed safely above mobile bottom bar */
+  .dash-floating-settings-btn {
+    bottom: 74px !important;
+    right: 14px !important;
+    width: 40px !important;
+    height: 40px !important;
+    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.28) !important;
+  }
+
+  .dash-floating-settings-btn svg {
+    width: 18px !important;
+    height: 18px !important;
+  }
+
   .dash-app-top-nav {
     height: 56px !important;
     padding: 0 12px !important;
@@ -8356,11 +8395,33 @@ button:active:not(:disabled) {
     border-radius: 14px !important;
   }
 
-  .products-control-bar,
-  .orders-filter-chips {
+  .products-control-bar {
     flex-direction: column !important;
     align-items: stretch !important;
     gap: 8px !important;
+  }
+
+  .orders-filter-chips {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: none !important;
+    gap: 8px !important;
+    padding-bottom: 4px !important;
+    margin-bottom: 12px !important;
+  }
+
+  .orders-filter-chips::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  .order-chip-btn {
+    flex: 0 0 auto !important;
+    white-space: nowrap !important;
+    padding: 6px 14px !important;
+    font-size: 0.76rem !important;
   }
 
   .products-search-wrap {

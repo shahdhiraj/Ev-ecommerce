@@ -779,93 +779,184 @@ export function OwnerDashboardPage() {
                   </Button>
                 </div>
 
-                <table className="dash-table-modern">
-                  <thead>
-                    <tr>
-                      <th>Order ID</th>
-                      <th>Customer & Destination</th>
-                      <th>Total Amount</th>
-                      <th>Fulfillment Status</th>
-                      <th>Quick Status Action</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {orders.slice(0, 5).map((order) => {
-                      const isDelivered = order.fulfillmentStatus === "Delivered"
-                      const isInTransit = order.fulfillmentStatus === "In Transit" || order.fulfillmentStatus === "Dispatched from Kathmandu Hub"
-                      
-                      return (
-                        <tr key={order.id}>
-                          <td>
-                            <strong>{order.orderNumber}</strong>
-                            <div className="text-xs text-slate-400">
+                {/* Desktop Table View */}
+                <div className="hidden md:block dash-table-wrap">
+                  <table className="dash-table-modern">
+                    <thead>
+                      <tr>
+                        <th>Order ID</th>
+                        <th>Customer & Destination</th>
+                        <th>Total Amount</th>
+                        <th>Fulfillment Status</th>
+                        <th>Quick Status Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {orders.slice(0, 5).map((order) => {
+                        const isDelivered = order.fulfillmentStatus === "Delivered"
+                        const isInTransit = order.fulfillmentStatus === "In Transit" || order.fulfillmentStatus === "Dispatched from Kathmandu Hub"
+                        
+                        return (
+                          <tr key={order.id}>
+                            <td>
+                              <strong>{order.orderNumber}</strong>
+                              <div className="text-xs text-slate-400">
+                                {new Date(order.createdAt).toLocaleDateString()}
+                              </div>
+                            </td>
+                            <td>
+                              <div className="font-semibold text-slate-900">
+                                {order.deliveryAddress?.fullName || "Aayush Shrestha"}
+                              </div>
+                              <div className="text-xs text-slate-500">
+                                {order.deliveryAddress?.city}, {order.deliveryAddress?.province}
+                              </div>
+                            </td>
+                            <td>
+                              <strong>{formatNpr(order.totalPaid)}</strong>
+                              <div className="text-xs text-slate-400">
+                                {order.items.length} item(s) · 13% VAT inc
+                              </div>
+                            </td>
+                            <td>
+                              <span
+                                className={`dash-status-pill ${
+                                  isDelivered
+                                    ? "status--delivered"
+                                    : isInTransit
+                                    ? "status--in-transit"
+                                    : "status--processing"
+                                }`}
+                              >
+                                <span className="dash-status-dot" />
+                                {order.fulfillmentStatus}
+                              </span>
+                            </td>
+                            <td>
+                              <div className="flex items-center gap-2">
+                                <select
+                                  className="status-dropdown text-xs py-1.5 px-2.5 rounded-lg border border-slate-300 bg-white cursor-pointer font-medium"
+                                  value={order.fulfillmentStatus}
+                                  onChange={(e) =>
+                                    updateOrderStatus(
+                                      order.id,
+                                      e.target.value as Order["fulfillmentStatus"],
+                                    )
+                                  }
+                                >
+                                  <option value="Order Placed">Order Placed</option>
+                                  <option value="Processing">Processing</option>
+                                  <option value="Dispatched from Kathmandu Hub">
+                                    Dispatched (Kathmandu)
+                                  </option>
+                                  <option value="In Transit">In Transit</option>
+                                  <option value="Delivered">Delivered</option>
+                                  <option value="Cancelled">Cancelled</option>
+                                </select>
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  onClick={() => setSelectedInvoiceOrder(order)}
+                                  title="View 13% Nepal VAT Tax Invoice"
+                                >
+                                  <Printer size={13} /> VAT Bill
+                                </Button>
+                              </div>
+                            </td>
+                          </tr>
+                        )
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+
+                {/* Mobile Orders Card View (Redesigned for Mobile Screens) */}
+                <div className="md:hidden flex flex-col gap-3">
+                  {orders.slice(0, 5).map((order) => {
+                    const isDelivered = order.fulfillmentStatus === "Delivered"
+                    const isInTransit = order.fulfillmentStatus === "In Transit" || order.fulfillmentStatus === "Dispatched from Kathmandu Hub"
+
+                    return (
+                      <div
+                        key={order.id}
+                        className="bg-white border border-slate-200 rounded-xl p-3.5 flex flex-col gap-2.5 shadow-xs"
+                      >
+                        {/* Order Header: ID, Date, Status */}
+                        <div className="flex items-center justify-between gap-2 border-b border-slate-100 pb-2">
+                          <div>
+                            <strong className="text-sm font-extrabold text-slate-900 block leading-tight">
+                              {order.orderNumber}
+                            </strong>
+                            <span className="text-[11px] text-slate-400">
                               {new Date(order.createdAt).toLocaleDateString()}
-                            </div>
-                          </td>
-                          <td>
-                            <div className="font-semibold text-slate-900">
-                              {order.deliveryAddress?.fullName || "Aayush Shrestha"}
-                            </div>
-                            <div className="text-xs text-slate-500">
-                              {order.deliveryAddress?.city}, {order.deliveryAddress?.province}
-                            </div>
-                          </td>
-                          <td>
-                            <strong>{formatNpr(order.totalPaid)}</strong>
-                            <div className="text-xs text-slate-400">
-                              {order.items.length} item(s) · 13% VAT inc
-                            </div>
-                          </td>
-                          <td>
-                            <span
-                              className={`dash-status-pill ${
-                                isDelivered
-                                  ? "status--delivered"
-                                  : isInTransit
-                                  ? "status--in-transit"
-                                  : "status--processing"
-                              }`}
-                            >
-                              <span className="dash-status-dot" />
-                              {order.fulfillmentStatus}
                             </span>
-                          </td>
-                          <td>
-                            <div className="flex items-center gap-2">
-                              <select
-                                className="status-dropdown text-xs py-1.5 px-2.5 rounded-lg border border-slate-300 bg-white cursor-pointer font-medium"
-                                value={order.fulfillmentStatus}
-                                onChange={(e) =>
-                                  updateOrderStatus(
-                                    order.id,
-                                    e.target.value as Order["fulfillmentStatus"],
-                                  )
-                                }
-                              >
-                                <option value="Order Placed">Order Placed</option>
-                                <option value="Processing">Processing</option>
-                                <option value="Dispatched from Kathmandu Hub">
-                                  Dispatched (Kathmandu)
-                                </option>
-                                <option value="In Transit">In Transit</option>
-                                <option value="Delivered">Delivered</option>
-                                <option value="Cancelled">Cancelled</option>
-                              </select>
-                              <Button
-                                variant="outline"
-                                size="sm"
-                                onClick={() => setSelectedInvoiceOrder(order)}
-                                title="View 13% Nepal VAT Tax Invoice"
-                              >
-                                <Printer size={13} /> VAT Bill
-                              </Button>
-                            </div>
-                          </td>
-                        </tr>
-                      )
-                    })}
-                  </tbody>
-                </table>
+                          </div>
+                          <span
+                            className={`dash-status-pill ${
+                              isDelivered
+                                ? "status--delivered"
+                                : isInTransit
+                                ? "status--in-transit"
+                                : "status--processing"
+                            }`}
+                          >
+                            <span className="dash-status-dot" />
+                            {order.fulfillmentStatus}
+                          </span>
+                        </div>
+
+                        {/* Customer & Destination */}
+                        <div className="flex flex-col gap-1 text-xs">
+                          <strong className="text-slate-900">
+                            {order.deliveryAddress?.fullName || "Aayush Shrestha"}
+                          </strong>
+                          <div className="text-slate-500 text-[11px]">
+                            {order.deliveryAddress?.city}, {order.deliveryAddress?.province} · {order.items.length} item(s)
+                          </div>
+                        </div>
+
+                        {/* Total Price */}
+                        <div className="flex items-baseline justify-between pt-1 border-t border-slate-100">
+                          <span className="text-[11px] text-slate-500">Total with 13% VAT</span>
+                          <strong className="text-sm font-extrabold text-slate-900">
+                            {formatNpr(order.totalPaid)}
+                          </strong>
+                        </div>
+
+                        {/* Quick Controls */}
+                        <div className="flex flex-col gap-2 pt-1">
+                          <select
+                            className="w-full text-xs py-2 px-2.5 rounded-lg border border-slate-300 bg-white cursor-pointer font-medium"
+                            value={order.fulfillmentStatus}
+                            onChange={(e) =>
+                              updateOrderStatus(
+                                order.id,
+                                e.target.value as Order["fulfillmentStatus"],
+                              )
+                            }
+                          >
+                            <option value="Order Placed">Order Placed</option>
+                            <option value="Processing">Processing</option>
+                            <option value="Dispatched from Kathmandu Hub">
+                              Dispatched (Kathmandu)
+                            </option>
+                            <option value="In Transit">In Transit</option>
+                            <option value="Delivered">Delivered</option>
+                            <option value="Cancelled">Cancelled</option>
+                          </select>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="w-full text-xs py-1.5 justify-center"
+                            onClick={() => setSelectedInvoiceOrder(order)}
+                          >
+                            <Printer size={13} /> View 13% VAT Bill
+                          </Button>
+                        </div>
+                      </div>
+                    )
+                  })}
+                </div>
               </div>
             </div>
           )}
@@ -916,98 +1007,188 @@ export function OwnerDashboardPage() {
             </div>
           </div>
 
-          {/* Product Items Table */}
+          {/* Product Items Table & Mobile Cards */}
           <div className="owner-table-card">
-            <table className="owner-table">
-              <thead>
-                <tr>
-                  <th>Product</th>
-                  <th>Subcategory</th>
-                  <th>Voltage</th>
-                  <th>Price (NPR)</th>
-                  <th>Status</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredProducts.map((prod) => (
-                  <tr key={prod.id}>
-                    <td>
-                      <div className="product-table-cell">
-                        <img
-                          src={prod.image}
-                          alt={prod.name}
-                          className="product-table-thumb"
-                        />
-                        <div>
-                          <strong className="product-table-name">
-                            {prod.name}
-                          </strong>
-                          <span className="product-table-brand">
-                            {prod.brand}
-                          </span>
-                        </div>
-                      </div>
-                    </td>
-                    <td>
-                      <span className="table-pill">{prod.subcategory}</span>
-                    </td>
-                    <td>
-                      <span className="table-voltage-badge">{prod.voltage}</span>
-                    </td>
-                    <td>
-                      <strong>{formatNpr(prod.price)}</strong>
-                      <div className="text-xs text-emerald-600">13% VAT Inc.</div>
-                    </td>
-                    <td>
-                      <button
-                        type="button"
-                        className={`stock-toggle-btn ${
-                          prod.availability === "In Stock" ? "is-instock" : "is-out"
-                        }`}
-                        onClick={() => {
-                          const nextStatus =
-                            prod.availability === "In Stock"
-                              ? "Out of Stock"
-                              : "In Stock"
-                          updateProduct(prod.id, { availability: nextStatus })
-                        }}
-                      >
-                        {prod.availability}
-                      </button>
-                    </td>
-                    <td>
-                      <div className="table-actions-cell">
-                        <IconButton
-                          label="Edit product"
-                          onClick={() => {
-                            setEditingProduct(prod)
-                            setEditPrice(String(prod.price || ""))
-                            setEditStockStatus(prod.availability)
-                          }}
-                        >
-                          <Edit2 size={16} />
-                        </IconButton>
-                        <IconButton
-                          label="Delete product"
-                          onClick={() => {
-                            if (
-                              window.confirm(
-                                `Remove "${prod.name}" from the store catalog?`,
-                              )
-                            ) {
-                              deleteProduct(prod.id)
-                            }
-                          }}
-                        >
-                          <Trash2 size={16} className="text-rose-500" />
-                        </IconButton>
-                      </div>
-                    </td>
+            {/* Desktop Table View */}
+            <div className="hidden md:block dash-table-wrap">
+              <table className="owner-table">
+                <thead>
+                  <tr>
+                    <th>Product</th>
+                    <th>Subcategory</th>
+                    <th>Voltage</th>
+                    <th>Price (NPR)</th>
+                    <th>Status</th>
+                    <th>Actions</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {filteredProducts.map((prod) => (
+                    <tr key={prod.id}>
+                      <td>
+                        <div className="product-table-cell">
+                          <img
+                            src={prod.image}
+                            alt={prod.name}
+                            className="product-table-thumb"
+                          />
+                          <div>
+                            <strong className="product-table-name">
+                              {prod.name}
+                            </strong>
+                            <span className="product-table-brand">
+                              {prod.brand}
+                            </span>
+                          </div>
+                        </div>
+                      </td>
+                      <td>
+                        <span className="table-pill">{prod.subcategory}</span>
+                      </td>
+                      <td>
+                        <span className="table-voltage-badge">{prod.voltage}</span>
+                      </td>
+                      <td>
+                        <strong>{formatNpr(prod.price)}</strong>
+                        <div className="text-xs text-emerald-600">13% VAT Inc.</div>
+                      </td>
+                      <td>
+                        <button
+                          type="button"
+                          className={`stock-toggle-btn ${
+                            prod.availability === "In Stock" ? "is-instock" : "is-out"
+                          }`}
+                          onClick={() => {
+                            const nextStatus =
+                              prod.availability === "In Stock"
+                                ? "Out of Stock"
+                                : "In Stock"
+                            updateProduct(prod.id, { availability: nextStatus })
+                          }}
+                        >
+                          {prod.availability}
+                        </button>
+                      </td>
+                      <td>
+                        <div className="table-actions-cell">
+                          <IconButton
+                            label="Edit product"
+                            onClick={() => {
+                              setEditingProduct(prod)
+                              setEditPrice(String(prod.price || ""))
+                              setEditStockStatus(prod.availability)
+                            }}
+                          >
+                            <Edit2 size={16} />
+                          </IconButton>
+                          <IconButton
+                            label="Delete product"
+                            onClick={() => {
+                              if (
+                                window.confirm(
+                                  `Remove "${prod.name}" from the store catalog?`,
+                                )
+                              ) {
+                                deleteProduct(prod.id)
+                              }
+                            }}
+                          >
+                            <Trash2 size={16} className="text-rose-500" />
+                          </IconButton>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            {/* Mobile Product Cards Stack */}
+            <div className="md:hidden flex flex-col gap-3 p-3">
+              {filteredProducts.map((prod) => (
+                <div
+                  key={prod.id}
+                  className="bg-white border border-slate-200 rounded-xl p-3 flex flex-col gap-2.5 shadow-xs"
+                >
+                  <div className="flex items-center gap-3">
+                    <img
+                      src={prod.image}
+                      alt={prod.name}
+                      className="w-14 h-14 rounded-lg object-cover bg-slate-900 shrink-0 border border-slate-200"
+                    />
+                    <div className="min-w-0 flex-1">
+                      <strong className="text-xs font-bold text-slate-900 block truncate">
+                        {prod.name}
+                      </strong>
+                      <span className="text-[11px] text-slate-400 block">
+                        {prod.brand}
+                      </span>
+                      <div className="flex items-center gap-1.5 mt-1">
+                        <span className="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded-md font-semibold">
+                          {prod.subcategory}
+                        </span>
+                        <span className="text-[10px] bg-amber-50 text-amber-700 border border-amber-200 px-1.5 py-0.5 rounded font-bold">
+                          {prod.voltage}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center justify-between pt-2 border-t border-slate-100">
+                    <div>
+                      <strong className="text-xs font-extrabold text-slate-900">
+                        {formatNpr(prod.price)}
+                      </strong>
+                      <div className="text-[10px] text-emerald-600">13% VAT Inc.</div>
+                    </div>
+                    <button
+                      type="button"
+                      className={`text-xs px-2.5 py-1 rounded-full font-bold transition-all cursor-pointer ${
+                        prod.availability === "In Stock"
+                          ? "bg-emerald-50 text-emerald-700 border border-emerald-300"
+                          : "bg-rose-50 text-rose-700 border border-rose-300"
+                      }`}
+                      onClick={() => {
+                        const nextStatus =
+                          prod.availability === "In Stock"
+                            ? "Out of Stock"
+                            : "In Stock"
+                        updateProduct(prod.id, { availability: nextStatus })
+                      }}
+                    >
+                      {prod.availability}
+                    </button>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-2 pt-1 border-t border-slate-100">
+                    <Button
+                      size="sm"
+                      variant="secondary"
+                      className="w-full text-xs py-1.5 justify-center"
+                      onClick={() => {
+                        setEditingProduct(prod)
+                        setEditPrice(String(prod.price || ""))
+                        setEditStockStatus(prod.availability)
+                      }}
+                    >
+                      <Edit2 size={13} /> Edit Product
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="w-full text-xs py-1.5 justify-center text-rose-600 hover:bg-rose-50 border-rose-200"
+                      onClick={() => {
+                        if (window.confirm(`Remove "${prod.name}" from catalog?`)) {
+                          deleteProduct(prod.id)
+                        }
+                      }}
+                    >
+                      <Trash2 size={13} /> Delete
+                    </Button>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       )}

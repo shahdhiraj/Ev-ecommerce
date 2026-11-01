@@ -734,7 +734,12 @@ export function StorefrontShell() {
                 </button>
 
                 {notificationsOpen && (
-                  <div className="dash-notif-dropdown">
+                  <>
+                    <div
+                      className="fixed inset-0 z-[9990] bg-black/30 backdrop-blur-[1px] md:hidden"
+                      onClick={() => setNotificationsOpen(false)}
+                    />
+                    <div className="dash-notif-dropdown">
                     <div className="dash-notif-header">
                       <h4>Notifications ({unreadNotifs})</h4>
                       <button
@@ -808,7 +813,8 @@ export function StorefrontShell() {
                       </button>
                     </div>
                   </div>
-                )}
+                </>
+              )}
               </div>
 
               {/* Support / Mail */}
@@ -843,79 +849,85 @@ export function StorefrontShell() {
                 </button>
 
                 {profileDropdownOpen && (
-                  <div className="dash-profile-menu-dropdown">
-                    <div className="dash-profile-menu-header">
-                      <div className="text-sm font-bold text-slate-900">
-                        {user.fullName}
+                  <>
+                    <div
+                      className="fixed inset-0 z-[9990] bg-black/30 backdrop-blur-[1px] md:hidden"
+                      onClick={() => setProfileDropdownOpen(false)}
+                    />
+                    <div className="dash-profile-menu-dropdown">
+                      <div className="dash-profile-menu-header">
+                        <div className="text-sm font-bold text-slate-900">
+                          {user.fullName}
+                        </div>
+                        <div className="text-xs text-slate-500 font-medium truncate">
+                          {user.email}
+                        </div>
+                        <div className="mt-2 inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-50 text-amber-700 border border-amber-200">
+                          <Check size={10} />
+                          {isOwner ? "Store Owner & Vendor" : "Verified Customer (Platinum)"}
+                        </div>
                       </div>
-                      <div className="text-xs text-slate-500 font-medium truncate">
-                        {user.email}
-                      </div>
-                      <div className="mt-2 inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-50 text-amber-700 border border-amber-200">
-                        <Check size={10} />
-                        {isOwner ? "Store Owner & Vendor" : "Verified Customer (Platinum)"}
-                      </div>
+
+                      <button
+                        type="button"
+                        className="dash-profile-menu-item"
+                        onClick={() => {
+                          setProfileDropdownOpen(false)
+                          navigate(isOwnerRoute ? "/owner/settings" : "/account/settings")
+                        }}
+                      >
+                        <Settings size={15} className="text-slate-400" />
+                        <span>{isOwnerRoute ? "Vendor Profile & Hub" : "Account Settings"}</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        className="dash-profile-menu-item"
+                        onClick={() => {
+                          setProfileDropdownOpen(false)
+                          setSettingsModalOpen(true)
+                        }}
+                      >
+                        <Settings size={15} className="text-slate-400" />
+                        <span>Quick Settings</span>
+                      </button>
+
+                      <div className="my-1 border-t border-slate-100" />
+
+                      <button
+                        type="button"
+                        className="dash-profile-menu-item"
+                        onClick={() => {
+                          setProfileDropdownOpen(false)
+                          if (isOwner) {
+                            switchRole("customer")
+                            navigate("/account")
+                          } else {
+                            switchRole("owner")
+                            navigate("/owner")
+                          }
+                        }}
+                      >
+                        <Zap size={15} className="text-amber-500" />
+                        <span>{isOwner ? "Switch to Customer Portal" : "Switch to Store Owner Demo"}</span>
+                      </button>
+
+                      <div className="my-1 border-t border-slate-100" />
+
+                      <button
+                        type="button"
+                        className="dash-profile-menu-item is-danger"
+                        onClick={() => {
+                          setProfileDropdownOpen(false)
+                          logout()
+                          navigate("/login")
+                        }}
+                      >
+                        <LogOut size={15} />
+                        <span>Sign Out</span>
+                      </button>
                     </div>
-
-                    <button
-                      type="button"
-                      className="dash-profile-menu-item"
-                      onClick={() => {
-                        setProfileDropdownOpen(false)
-                        navigate(isOwnerRoute ? "/owner/settings" : "/account/settings")
-                      }}
-                    >
-                      <Settings size={15} className="text-slate-400" />
-                      <span>{isOwnerRoute ? "Vendor Profile & Hub" : "Account Settings"}</span>
-                    </button>
-
-                    <button
-                      type="button"
-                      className="dash-profile-menu-item"
-                      onClick={() => {
-                        setProfileDropdownOpen(false)
-                        setSettingsModalOpen(true)
-                      }}
-                    >
-                      <Settings size={15} className="text-slate-400" />
-                      <span>Quick Settings</span>
-                    </button>
-
-                    <div className="my-1 border-t border-slate-100" />
-
-                    <button
-                      type="button"
-                      className="dash-profile-menu-item"
-                      onClick={() => {
-                        setProfileDropdownOpen(false)
-                        if (isOwner) {
-                          switchRole("customer")
-                          navigate("/account")
-                        } else {
-                          switchRole("owner")
-                          navigate("/owner")
-                        }
-                      }}
-                    >
-                      <Zap size={15} className="text-amber-500" />
-                      <span>{isOwner ? "Switch to Customer Portal" : "Switch to Store Owner Demo"}</span>
-                    </button>
-
-                    <div className="my-1 border-t border-slate-100" />
-
-                    <button
-                      type="button"
-                      className="dash-profile-menu-item is-danger"
-                      onClick={() => {
-                        setProfileDropdownOpen(false)
-                        logout()
-                        navigate("/login")
-                      }}
-                    >
-                      <LogOut size={15} />
-                      <span>Sign Out</span>
-                    </button>
-                  </div>
+                  </>
                 )}
               </div>
             </div>

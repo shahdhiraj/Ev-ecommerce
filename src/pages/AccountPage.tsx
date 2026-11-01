@@ -627,7 +627,7 @@ export function AccountPage() {
                 </div>
 
                 {/* Filter Chips */}
-                <div className="flex gap-2 mb-4 overflow-x-auto pb-1">
+                <div className="flex gap-2 mb-4 overflow-x-auto pb-1 flex-nowrap scrollbar-none">
                   {[
                     { id: "all", label: "All Orders" },
                     { id: "in transit", label: "In Transit" },
@@ -637,9 +637,9 @@ export function AccountPage() {
                     <button
                       key={chip.id}
                       type="button"
-                      className={`text-xs px-3 py-1.5 rounded-full border transition-colors font-medium cursor-pointer ${
+                      className={`text-xs px-3.5 py-1.5 rounded-full border transition-colors font-medium cursor-pointer shrink-0 whitespace-nowrap ${
                         orderStatusFilter === chip.id
-                          ? "bg-slate-900 text-white border-slate-900 font-bold"
+                          ? "bg-slate-900 text-white border-slate-900 font-bold shadow-xs"
                           : "bg-white text-slate-600 border-slate-200 hover:bg-slate-50"
                       }`}
                       onClick={() => setOrderStatusFilter(chip.id)}
@@ -649,104 +649,208 @@ export function AccountPage() {
                   ))}
                 </div>
 
-                <table className="dash-table-modern">
-                  <thead>
-                    <tr>
-                      <th>Order ID</th>
-                      <th>Delivery Destination</th>
-                      <th>Total Amount</th>
-                      <th>Fulfillment Status</th>
-                      <th>Order Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {orders
-                      .filter((order) => {
-                        if (orderStatusFilter === "all") return true
-                        return order.fulfillmentStatus.toLowerCase().includes(orderStatusFilter.toLowerCase())
-                      })
-                      .slice(0, 5)
-                      .map((order) => {
-                        const isDelivered = order.fulfillmentStatus === "Delivered"
-                        const isInTransit = order.fulfillmentStatus === "In Transit" || order.fulfillmentStatus === "Dispatched from Kathmandu Hub"
+                {/* Desktop Table View */}
+                <div className="hidden md:block dash-table-wrap">
+                  <table className="dash-table-modern">
+                    <thead>
+                      <tr>
+                        <th>Order ID</th>
+                        <th>Delivery Destination</th>
+                        <th>Total Amount</th>
+                        <th>Fulfillment Status</th>
+                        <th>Order Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {orders
+                        .filter((order) => {
+                          if (orderStatusFilter === "all") return true
+                          return order.fulfillmentStatus.toLowerCase().includes(orderStatusFilter.toLowerCase())
+                        })
+                        .slice(0, 5)
+                        .map((order) => {
+                          const isDelivered = order.fulfillmentStatus === "Delivered"
+                          const isInTransit = order.fulfillmentStatus === "In Transit" || order.fulfillmentStatus === "Dispatched from Kathmandu Hub"
 
-                        return (
-                          <tr key={order.id}>
-                            <td>
-                              <strong>{order.orderNumber}</strong>
-                              <div className="text-xs text-slate-400">
-                                {new Date(order.createdAt).toLocaleDateString()}
-                              </div>
-                            </td>
-                            <td>
-                              <div className="font-semibold text-slate-900">
-                                {order.deliveryAddress?.city}, {order.deliveryAddress?.province}
-                              </div>
-                              <div className="text-xs text-slate-500">
-                                {order.items.length} item(s): {order.items[0]?.name.slice(0, 32)}...
-                              </div>
-                            </td>
-                            <td>
-                              <strong>{formatNpr(order.totalPaid)}</strong>
-                              <div className="text-xs text-slate-400">
-                                13% Nepal VAT Inc.
-                              </div>
-                            </td>
-                            <td>
-                              <span
-                                className={`dash-status-pill ${
-                                  isDelivered
-                                    ? "status--delivered"
-                                    : isInTransit
-                                    ? "status--in-transit"
-                                    : "status--processing"
-                                }`}
-                              >
-                                <span className="dash-status-dot" />
-                                {order.fulfillmentStatus}
-                              </span>
-                            </td>
-                            <td>
-                              <div className="flex flex-wrap items-center gap-1.5">
-                                <Button
-                                  size="sm"
-                                  variant="secondary"
-                                  onClick={() =>
-                                    navigate(`/track-order/${order.orderNumber}`)
-                                  }
+                          return (
+                            <tr key={order.id}>
+                              <td>
+                                <strong>{order.orderNumber}</strong>
+                                <div className="text-xs text-slate-400">
+                                  {new Date(order.createdAt).toLocaleDateString()}
+                                </div>
+                              </td>
+                              <td>
+                                <div className="font-semibold text-slate-900">
+                                  {order.deliveryAddress?.city}, {order.deliveryAddress?.province}
+                                </div>
+                                <div className="text-xs text-slate-500">
+                                  {order.items.length} item(s): {order.items[0]?.name.slice(0, 32)}...
+                                </div>
+                              </td>
+                              <td>
+                                <strong>{formatNpr(order.totalPaid)}</strong>
+                                <div className="text-xs text-slate-400">
+                                  13% Nepal VAT Inc.
+                                </div>
+                              </td>
+                              <td>
+                                <span
+                                  className={`dash-status-pill ${
+                                    isDelivered
+                                      ? "status--delivered"
+                                      : isInTransit
+                                      ? "status--in-transit"
+                                      : "status--processing"
+                                  }`}
                                 >
-                                  <Truck size={13} /> Track
-                                </Button>
-                                <Button
-                                  size="sm"
-                                  variant="outline"
-                                  onClick={() => setInvoiceModalOrder(order)}
-                                >
-                                  <Printer size={13} /> 13% VAT Bill
-                                </Button>
-                                <Button
-                                  size="sm"
-                                  variant="secondary"
-                                  onClick={() => {
-                                    order.items.forEach((it) => {
-                                      addToCart(it.name, {
-                                        quantity: it.quantity,
-                                        variant: it.variant,
-                                        sku: it.sku,
+                                  <span className="dash-status-dot" />
+                                  {order.fulfillmentStatus}
+                                </span>
+                              </td>
+                              <td>
+                                <div className="flex flex-wrap items-center gap-1.5">
+                                  <Button
+                                    size="sm"
+                                    variant="secondary"
+                                    onClick={() =>
+                                      navigate(`/track-order/${order.orderNumber}`)
+                                    }
+                                  >
+                                    <Truck size={13} /> Track
+                                  </Button>
+                                  <Button
+                                    size="sm"
+                                    variant="outline"
+                                    onClick={() => setInvoiceModalOrder(order)}
+                                  >
+                                    <Printer size={13} /> 13% VAT Bill
+                                  </Button>
+                                  <Button
+                                    size="sm"
+                                    variant="secondary"
+                                    onClick={() => {
+                                      order.items.forEach((it) => {
+                                        addToCart(it.name, {
+                                          quantity: it.quantity,
+                                          variant: it.variant,
+                                          sku: it.sku,
+                                        })
                                       })
-                                    })
-                                    notify(`Added ${order.items.length} item(s) to Cart!`)
-                                  }}
-                                >
-                                  <RotateCcw size={13} /> Buy Again
-                                </Button>
-                              </div>
-                            </td>
-                          </tr>
-                        )
-                      })}
-                  </tbody>
-                </table>
+                                      notify(`Added ${order.items.length} item(s) to Cart!`)
+                                    }}
+                                  >
+                                    <RotateCcw size={13} /> Buy Again
+                                  </Button>
+                                </div>
+                              </td>
+                            </tr>
+                          )
+                        })}
+                    </tbody>
+                  </table>
+                </div>
+
+                {/* Mobile Orders Card View (Redesigned for Mobile Screens) */}
+                <div className="md:hidden flex flex-col gap-3">
+                  {orders
+                    .filter((order) => {
+                      if (orderStatusFilter === "all") return true
+                      return order.fulfillmentStatus.toLowerCase().includes(orderStatusFilter.toLowerCase())
+                    })
+                    .slice(0, 5)
+                    .map((order) => {
+                      const isDelivered = order.fulfillmentStatus === "Delivered"
+                      const isInTransit = order.fulfillmentStatus === "In Transit" || order.fulfillmentStatus === "Dispatched from Kathmandu Hub"
+
+                      return (
+                        <div
+                          key={order.id}
+                          className="bg-white border border-slate-200 rounded-xl p-3.5 flex flex-col gap-2.5 shadow-xs"
+                        >
+                          {/* Card Header: Order Number, Date & Status */}
+                          <div className="flex items-center justify-between gap-2 border-b border-slate-100 pb-2">
+                            <div>
+                              <strong className="text-sm font-extrabold text-slate-900 block leading-tight">
+                                {order.orderNumber}
+                              </strong>
+                              <span className="text-[11px] text-slate-400">
+                                {new Date(order.createdAt).toLocaleDateString()}
+                              </span>
+                            </div>
+                            <span
+                              className={`dash-status-pill ${
+                                isDelivered
+                                  ? "status--delivered"
+                                  : isInTransit
+                                  ? "status--in-transit"
+                                  : "status--processing"
+                              }`}
+                            >
+                              <span className="dash-status-dot" />
+                              {order.fulfillmentStatus}
+                            </span>
+                          </div>
+
+                          {/* Destination & Items */}
+                          <div className="flex flex-col gap-1 text-xs">
+                            <div className="flex items-center gap-1.5 font-semibold text-slate-800">
+                              <MapPin size={13} className="text-amber-500 shrink-0" />
+                              <span>{order.deliveryAddress?.city}, {order.deliveryAddress?.province}</span>
+                            </div>
+                            <div className="text-slate-500 pl-4 text-[11px]">
+                              {order.items.length} item(s): {order.items[0]?.name.slice(0, 36)}...
+                            </div>
+                          </div>
+
+                          {/* Price */}
+                          <div className="flex items-baseline justify-between pt-1 border-t border-slate-100">
+                            <span className="text-[11px] text-slate-500">Total with 13% VAT</span>
+                            <strong className="text-sm font-extrabold text-slate-900">
+                              {formatNpr(order.totalPaid)}
+                            </strong>
+                          </div>
+
+                          {/* Mobile Action Buttons */}
+                          <div className="grid grid-cols-3 gap-1.5 pt-1">
+                            <Button
+                              size="sm"
+                              variant="secondary"
+                              className="w-full text-xs py-1.5 px-2 justify-center"
+                              onClick={() => navigate(`/track-order/${order.orderNumber}`)}
+                            >
+                              <Truck size={12} /> Track
+                            </Button>
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              className="w-full text-xs py-1.5 px-2 justify-center"
+                              onClick={() => setInvoiceModalOrder(order)}
+                            >
+                              <Printer size={12} /> VAT Bill
+                            </Button>
+                            <Button
+                              size="sm"
+                              variant="secondary"
+                              className="w-full text-xs py-1.5 px-2 justify-center"
+                              onClick={() => {
+                                order.items.forEach((it) => {
+                                  addToCart(it.name, {
+                                    quantity: it.quantity,
+                                    variant: it.variant,
+                                    sku: it.sku,
+                                  })
+                                })
+                                notify(`Added ${order.items.length} item(s) to Cart!`)
+                              }}
+                            >
+                              <RotateCcw size={12} /> Buy Again
+                            </Button>
+                          </div>
+                        </div>
+                      )
+                    })}
+                </div>
               </div>
             </div>
           )}
