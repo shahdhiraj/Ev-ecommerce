@@ -43,7 +43,7 @@ export function ProductComparisonModal({
               <span key={product.id} className="relative">
                 {onRemove && (
                   <button
-                    className="absolute top-1 right-1 text-slate-400 hover:text-red-500 p-1 rounded transition-colors focus-visible:outline-2 focus-visible:outline-[#f58220]"
+                    className="absolute top-1 right-1 text-slate-400 hover:text-red-500 p-1 rounded transition-colors focus-visible:outline-2 focus-visible:outline-[var(--color-ring)]"
                     onClick={() => onRemove(product.id)}
                     title="Remove component"
                     type="button"

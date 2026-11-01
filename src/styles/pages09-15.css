@@ -3,28 +3,29 @@
    ========================================================================== */
 
 :root {
-  --ubuy-bg-primary: #ffffff;
-  --ubuy-bg-secondary: #f7f8fa;
-  --ubuy-bg-section: #f1f4f8;
-  --ubuy-text-primary: #151b2d;
-  --ubuy-text-secondary: #64748b;
-  --ubuy-brand: #f58220;
-  --ubuy-brand-hover: #dd6c10;
-  --ubuy-brand-soft: #fff3e8;
-  --ubuy-border: #e8ecf1;
-  --ubuy-border-subtle: #f1f5f9;
-  --ubuy-success: #16845b;
-  --ubuy-warning: #d89a24;
-  --ubuy-error: #dc3545;
-  --ubuy-shadow-card: 0 4px 20px rgba(21, 27, 45, 0.05);
-  --ubuy-shadow-hover: 0 12px 36px rgba(21, 27, 45, 0.09);
-  --ubuy-shadow-sticky: 0 10px 30px rgba(21, 27, 45, 0.08);
-  --ubuy-radius-sm: 8px;
-  --ubuy-radius-md: 14px;
-  --ubuy-radius-lg: 20px;
-  --ubuy-radius-xl: 28px;
-  --transition-fast: 160ms cubic-bezier(0.16, 1, 0.3, 1);
-  --transition-normal: 240ms cubic-bezier(0.16, 1, 0.3, 1);
+  /* Mapped directly to central Swiss Minimalism & Semantic Theme Tokens */
+  --ubuy-bg-primary: var(--color-surface, #ffffff);
+  --ubuy-bg-secondary: var(--color-surface-soft, #f8fafc);
+  --ubuy-bg-section: var(--color-surface-muted, #f1f5f9);
+  --ubuy-text-primary: var(--color-ink, #090d16);
+  --ubuy-text-secondary: var(--color-muted, #475569);
+  --ubuy-brand: var(--color-brand, #ea580c);
+  --ubuy-brand-hover: var(--color-brand-hover, #c2410c);
+  --ubuy-brand-soft: var(--color-brand-soft, #fff7ed);
+  --ubuy-border: var(--color-border, #e2e8f0);
+  --ubuy-border-subtle: var(--color-border, #e2e8f0);
+  --ubuy-success: var(--color-success, #059669);
+  --ubuy-warning: var(--color-warning, #d97706);
+  --ubuy-error: var(--color-error, #dc2626);
+  --ubuy-shadow-card: var(--shadow-soft, 0 1px 3px rgba(15, 23, 42, 0.05));
+  --ubuy-shadow-hover: var(--shadow-float, 0 4px 16px rgba(15, 23, 42, 0.07));
+  --ubuy-shadow-sticky: var(--shadow-soft, 0 1px 3px rgba(15, 23, 42, 0.05));
+  --ubuy-radius-sm: var(--radius-xs, 4px);
+  --ubuy-radius-md: var(--radius-button, 8px);
+  --ubuy-radius-lg: var(--radius-card, 12px);
+  --ubuy-radius-xl: var(--radius-panel, 14px);
+  --transition-fast: var(--transition-fast, 150ms cubic-bezier(0.16, 1, 0.3, 1));
+  --transition-normal: var(--transition-base, 200ms cubic-bezier(0.16, 1, 0.3, 1));
 }
 
 /* ==========================================================================

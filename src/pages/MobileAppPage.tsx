@@ -72,8 +72,26 @@ export function MobileAppPage() {
   // Simulator controls
   const [device, setDevice] = useState<DeviceType>("iphone")
   const [scale, setScale] = useState<number>(100)
-  const [isDarkMode, setIsDarkMode] = useState(false)
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    try {
+      return localStorage.getItem("ubuy-dark-mode") === "true"
+    } catch {
+      return false
+    }
+  })
   const [showQrModal, setShowQrModal] = useState(false)
+
+  // Sync document root class for Swiss Minimalism dark mode
+  useEffect(() => {
+    try {
+      localStorage.setItem("ubuy-dark-mode", String(isDarkMode))
+      if (isDarkMode) {
+        document.documentElement.classList.add("dark", "is-dark")
+      } else {
+        document.documentElement.classList.remove("dark", "is-dark")
+      }
+    } catch {}
+  }, [isDarkMode])
 
   // Mobile App Internal Navigation
   const [activeTab, setActiveTab] = useState<TabType>("home")
@@ -1544,3 +1562,4 @@ export function MobileAppPage() {
     </div>
   )
 }
+

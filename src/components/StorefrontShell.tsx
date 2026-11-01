@@ -228,6 +228,15 @@ export function StorefrontShell() {
     [commerce, cartOpen],
   )
 
+  // Sync document root class for global Swiss Style dark mode support
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add("dark", "is-dark")
+    } else {
+      document.documentElement.classList.remove("dark", "is-dark")
+    }
+  }, [isDarkMode])
+
   // Keyboard shortcut listeners (⌘K for search, ⌘B for sidebar, Escape to dismiss)
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {

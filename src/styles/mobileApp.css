@@ -273,12 +273,12 @@
 }
 
 /* ==========================================================================
-   NATIVE APP TOP HEADER
+   NATIVE APP TOP HEADER (SWISS MINIMALIST SEMANTIC TOKENS)
    ========================================================================== */
 .mobile-app-header {
   padding: 6px 14px 10px;
-  background: #ffffff;
-  border-bottom: 1px solid #f1f5f9;
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
   z-index: 20;
 }
 
@@ -293,18 +293,18 @@
   display: flex;
   align-items: center;
   gap: 5px;
-  background: #f8fafc;
+  background: var(--color-surface-soft);
   padding: 4px 10px;
-  border-radius: 20px;
-  border: 1px solid #e2e8f0;
+  border-radius: var(--radius-button);
+  border: 1px solid var(--color-border);
   font-size: 0.73rem;
-  color: #0f172a;
+  color: var(--color-ink);
   cursor: pointer;
 }
 
 .mobile-location-btn strong {
   font-weight: 700;
-  color: #0f172a;
+  color: var(--color-ink);
 }
 
 .mobile-app-header-actions {
@@ -317,18 +317,18 @@
   position: relative;
   width: 34px;
   height: 34px;
-  border-radius: 50%;
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
+  border-radius: var(--radius-button);
+  background: var(--color-surface-soft);
+  border: 1px solid var(--color-border);
   display: grid;
   place-items: center;
-  color: #334155;
+  color: var(--color-ink);
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: all var(--transition-fast);
 }
 
 .mobile-header-icon-btn:active {
-  transform: scale(0.92);
+  transform: scale(0.95);
 }
 
 .mobile-badge-dot {
@@ -656,7 +656,7 @@
 }
 
 /* ==========================================================================
-   MOBILE APP PRODUCT GRID (2-COLUMN ADAPTIVE)
+   MOBILE APP PRODUCT GRID (2-COLUMN ADAPTIVE SWISS MINIMALISM)
    ========================================================================== */
 .mobile-products-section {
   padding: 0 14px 16px;
@@ -671,14 +671,16 @@
 
 .mobile-sec-title {
   font-size: 0.92rem;
-  font-weight: 800;
-  color: #0f172a;
+  font-weight: 700;
+  color: var(--color-ink);
+  font-family: var(--font-heading);
+  letter-spacing: -0.015em;
 }
 
 .mobile-sec-link {
   font-size: 0.74rem;
   font-weight: 700;
-  color: #f58220;
+  color: var(--color-brand);
   text-decoration: none;
 }
 
@@ -689,20 +691,26 @@
 }
 
 .mobile-app-card {
-  background: #ffffff;
-  border-radius: 14px;
-  border: 1px solid #e2e8f0;
+  background: var(--color-surface);
+  border-radius: var(--radius-card);
+  border: 1px solid var(--color-border);
   overflow: hidden;
   display: flex;
   flex-direction: column;
   position: relative;
-  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+  box-shadow: var(--shadow-soft);
+  transition: border-color var(--transition-fast), transform var(--transition-fast);
+}
+
+.mobile-app-card:hover {
+  border-color: var(--color-brand);
+  transform: translateY(-1px);
 }
 
 .mobile-app-card-img-wrap {
   height: 120px;
   position: relative;
-  background: #f1f5f9;
+  background: var(--color-surface-soft);
   overflow: hidden;
 }
 
@@ -718,14 +726,14 @@
   right: 6px;
   width: 28px;
   height: 28px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(4px);
+  border-radius: var(--radius-xs);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
   display: grid;
   place-items: center;
-  border: none;
   cursor: pointer;
   z-index: 2;
+  box-shadow: var(--shadow-soft);
 }
 
 .mobile-app-card-body {
@@ -738,15 +746,18 @@
 .mobile-app-card-brand {
   font-size: 0.62rem;
   font-weight: 700;
-  color: #64748b;
+  color: var(--color-muted);
   text-transform: uppercase;
+  letter-spacing: 0.08em;
 }
 
 .mobile-app-card-title {
   font-size: 0.78rem;
   font-weight: 700;
   line-height: 1.25;
-  color: #0f172a;
+  color: var(--color-ink);
+  font-family: var(--font-heading);
+  letter-spacing: -0.01em;
   margin: 3px 0 6px;
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -761,34 +772,36 @@
   justify-content: space-between;
   margin-top: auto;
   padding-top: 6px;
-  border-top: 1px solid #f1f5f9;
+  border-top: 1px solid var(--color-border);
 }
 
 .mobile-app-card-price {
   font-size: 0.88rem;
   font-weight: 800;
-  color: #0f172a;
+  color: var(--color-ink);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
 }
 
 .mobile-app-card-add-btn {
   width: 28px;
   height: 28px;
-  border-radius: 8px;
-  background: #f58220;
+  border-radius: var(--radius-xs);
+  background: var(--color-brand);
   color: #ffffff;
   display: grid;
   place-items: center;
   border: none;
   cursor: pointer;
-  transition: transform 0.15s ease;
+  transition: transform var(--transition-fast);
 }
 
 .mobile-app-card-add-btn:active {
-  transform: scale(0.9);
+  transform: scale(0.95);
 }
 
 /* ==========================================================================
-   NATIVE APP BOTTOM NAVIGATION BAR
+   NATIVE APP BOTTOM NAVIGATION BAR (SWISS MINIMALIST SEMANTIC TOKENS)
    ========================================================================== */
 .mobile-app-bottom-bar {
   position: absolute;
@@ -796,9 +809,9 @@
   left: 0;
   right: 0;
   height: 64px;
-  background: rgba(255, 255, 255, 0.98);
+  background: var(--color-surface);
   backdrop-filter: blur(20px);
-  border-top: 1px solid #e2e8f0;
+  border-top: 1px solid var(--color-border);
   display: flex;
   align-items: center;
   justify-content: space-around;
@@ -818,14 +831,14 @@
   position: relative;
   width: 20%;
   padding: 4px 0;
-  color: #64748b;
+  color: var(--color-muted);
   font-size: 0.65rem;
   font-weight: 600;
-  transition: color 0.15s ease;
+  transition: color var(--transition-fast);
 }
 
 .mobile-app-tab-item.is-active {
-  color: #ea580c;
+  color: var(--color-brand);
   font-weight: 800;
 }
 
@@ -837,7 +850,7 @@
   position: absolute;
   top: -4px;
   right: -8px;
-  background: #ea580c;
+  background: var(--color-brand);
   color: #ffffff;
   font-size: 0.58rem;
   font-weight: 800;
@@ -847,7 +860,7 @@
   border-radius: 7px;
   display: grid;
   place-items: center;
-  border: 1.5px solid #ffffff;
+  border: 1.5px solid var(--color-surface);
 }
 
 /* iOS Home Indicator Bar */
@@ -880,11 +893,13 @@
   bottom: 0;
   left: 0;
   right: 0;
-  background: #ffffff;
-  border-radius: 24px 24px 0 0;
+  background: var(--color-surface);
+  color: var(--color-ink);
+  border-top: 1px solid var(--color-border);
+  border-radius: var(--radius-panel) var(--radius-panel) 0 0;
   padding: 16px 18px 24px;
   z-index: 61;
-  box-shadow: 0 -10px 40px rgba(15, 23, 42, 0.25);
+  box-shadow: 0 -8px 30px rgba(15, 23, 42, 0.15);
   max-height: 85%;
   overflow-y: auto;
   animation: slide-up 0.25s cubic-bezier(0.16, 1, 0.3, 1);
@@ -979,3 +994,4 @@
   font-weight: 800;
   font-size: 1.1rem;
 }
+
