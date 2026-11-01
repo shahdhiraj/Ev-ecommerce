@@ -7,6 +7,7 @@ import {
   Boxes,
   Check,
   ChevronDown,
+  ChevronRight,
   Clock,
   Clock3,
   CreditCard,

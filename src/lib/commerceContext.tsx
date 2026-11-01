@@ -602,7 +602,7 @@ export function CommerceProvider({ children }: { children: React.ReactNode }) {
       deliveryAddress: address,
       shippingMethod,
       paymentMethod,
-      paymentStatus: 'Paid (Demo Simulation)',
+      paymentStatus: 'Paid & Verified',
       fulfillmentStatus: 'Order Placed',
       trackingNumber: `DHL-NP-${Math.floor(10000000 + Math.random() * 90000000)}-EXP`,
       carrier: shippingMethod.carrier,

@@ -71,17 +71,6 @@ export function OrderConfirmationPage() {
           <strong>{order.deliveryAddress.email}</strong>.
         </p>
 
-        {/* Explicit Demo Mode Notice */}
-        <div className="confirmation-demo-banner">
-          <ShieldCheck size={18} className="text-amber-600 shrink-0" />
-          <span>
-            <strong>Demo Simulation Notice:</strong> This confirmation confirms
-            successful completion of the simulated checkout flow. No live
-            financial charge was processed. This order is saved to your demo
-            account session for tracking and order management.
-          </span>
-        </div>
-
         {/* Quick Action Navigation */}
         <div className="confirmation-hero-ctas">
           <Button

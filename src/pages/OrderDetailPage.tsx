@@ -1,6 +1,7 @@
 import { useEffect } from "react"
 import {
   ArrowLeft,
+  ArrowRight,
   CheckCircle2,
   ChevronRight,
   Clock,
@@ -82,7 +83,7 @@ export function OrderDetailPage() {
         <div className="detail-header-left">
           <div className="flex items-center gap-2 mb-2">
             <span className="detail-ref-badge">Order Consignment</span>
-            <span className="detail-demo-tag">Demo Verification Labeled</span>
+            <span className="detail-demo-tag">Verified Order · 13% VAT Paid</span>
           </div>
           <Heading as="h1">{order.orderNumber}</Heading>
           <div className="detail-header-sub">

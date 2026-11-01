@@ -6,6 +6,7 @@ import {
   Heart,
   HelpCircle,
   Info,
+  MapPin,
   Minus,
   Package,
   Plus,

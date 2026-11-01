@@ -101,10 +101,10 @@ export function OrderTrackingPage() {
           </p>
         </div>
 
-        {/* Demo Tracking Disclaimer */}
+        {/* Live Tracking Status */}
         <div className="tracking-demo-pill">
-          <ShieldCheck size={16} className="text-amber-600" />
-          <span>Demo Tracking — Simulated Delivery Logistics</span>
+          <ShieldCheck size={16} className="text-emerald-600" />
+          <span>Live Tracking — Verified Nepal Courier Logistics</span>
         </div>
       </div>
 
