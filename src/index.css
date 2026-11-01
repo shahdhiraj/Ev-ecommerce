@@ -5885,50 +5885,71 @@
      ========================================================================== */
   .home-hero--minimal {
     overflow-x: hidden !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+    box-sizing: border-box !important;
   }
 
   .home-hero--minimal .hero {
     grid-template-columns: 1fr !important;
-    gap: 18px !important;
-    padding-block: 16px 24px !important;
+    gap: 14px !important;
+    padding-block: 12px 18px !important;
+    padding-inline: 16px !important;
+    margin-inline: auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
     min-height: auto !important;
+    box-sizing: border-box !important;
+  }
+
+  .hero__content {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-inline: 0 !important;
+    margin-inline: 0 !important;
+    box-sizing: border-box !important;
+    text-align: left !important;
   }
 
   .hero-eyebrow-badge {
-    font-size: 0.68rem !important;
-    padding: 4px 10px !important;
+    font-size: 0.62rem !important;
+    letter-spacing: 0.04em !important;
+    padding: 3px 8px !important;
+    margin-bottom: 8px !important;
     max-width: 100% !important;
     white-space: normal !important;
-    text-align: center !important;
-    margin-bottom: 10px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    box-sizing: border-box !important;
   }
 
-  .hero-eyebrow-badge {
-    font-size: 0.65rem !important;
-    padding: 3px 9px !important;
-    margin-bottom: 8px !important;
-  }
-
-  .hero-headline {
-    font-size: clamp(1.2rem, 5vw, 1.45rem) !important;
-    line-height: 1.24 !important;
+  .hero-headline,
+  .home-hero h1,
+  .home-hero .heading-block h1 {
+    font-size: clamp(1.1rem, 4.4vw, 1.35rem) !important;
+    line-height: 1.25 !important;
     letter-spacing: -0.02em !important;
     margin-bottom: 8px !important;
-    word-break: keep-all !important;
-    hyphens: none !important;
+    word-break: normal !important;
+    overflow-wrap: normal !important;
+    white-space: normal !important;
+    color: #0f172a !important;
   }
 
   .hero-headline__accent {
-    display: inline-block !important;
+    display: inline !important;
+    color: #f58220 !important;
     font-size: inherit !important;
   }
 
   .hero__copy {
-    font-size: 0.8rem !important;
-    line-height: 1.42 !important;
-    margin-bottom: 14px !important;
+    font-size: 0.78rem !important;
+    line-height: 1.4 !important;
+    margin-bottom: 12px !important;
     max-width: 100% !important;
     color: #64748b !important;
+    box-sizing: border-box !important;
   }
 
   .hero__cta-group {
@@ -5936,20 +5957,23 @@
     grid-template-columns: 1fr 1fr !important;
     gap: 8px !important;
     width: 100% !important;
-    margin-bottom: 14px !important;
+    max-width: 100% !important;
+    margin-bottom: 12px !important;
+    box-sizing: border-box !important;
   }
 
   .hero-btn-primary,
   .hero-btn-secondary {
     width: 100% !important;
-    height: 40px !important;
-    min-height: 40px !important;
-    padding: 0 8px !important;
-    font-size: 0.78rem !important;
+    height: 38px !important;
+    min-height: 38px !important;
+    padding: 0 6px !important;
+    font-size: 0.76rem !important;
     font-weight: 700 !important;
     justify-content: center !important;
     white-space: nowrap !important;
-    border-radius: 10px !important;
+    border-radius: 9px !important;
+    box-sizing: border-box !important;
   }
 
   .hero-btn-primary span,
@@ -5971,6 +5995,7 @@
     gap: 4px !important;
     padding: 3px !important;
     border-radius: 10px !important;
+    box-sizing: border-box !important;
   }
 
   .hero-switcher-tabs::-webkit-scrollbar {
@@ -5986,18 +6011,36 @@
 
   /* Interactive Flagship Card on Mobile - Compact Screen-Fit Sizing */
   .hero-showcase-wrapper {
+    width: 100% !important;
     max-width: 100% !important;
     margin: 0 auto !important;
+    padding-inline: 0 !important;
     gap: 8px !important;
+    box-sizing: border-box !important;
   }
 
   .hero-featured-card--interactive {
     border-radius: 14px !important;
+    width: 100% !important;
     max-width: 100% !important;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+    border: 1px solid #e2e8f0 !important;
   }
 
   .hero-featured-media {
-    height: 140px !important;
+    height: 130px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow: hidden !important;
+    position: relative !important;
+  }
+
+  .hero-featured-media img,
+  .hero-featured-img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
   }
 
   .hero-media-overlay-top {
@@ -6038,6 +6081,8 @@
 
   .hero-featured-body {
     padding: 10px 12px 12px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
   }
 
   .hero-featured-topline {
@@ -6054,39 +6099,58 @@
   }
 
   .hero-featured-name {
-    font-size: 0.92rem !important;
+    font-size: 0.9rem !important;
     line-height: 1.25 !important;
     margin-bottom: 4px !important;
+    word-break: normal !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2 !important;
+    -webkit-box-orient: vertical !important;
   }
 
   .hero-specs-list {
+    display: flex !important;
+    flex-wrap: wrap !important;
     gap: 4px !important;
     margin: 4px 0 8px !important;
+    max-width: 100% !important;
   }
 
   .hero-spec-chip {
     padding: 2px 6px !important;
     font-size: 0.65rem !important;
+    white-space: nowrap !important;
   }
 
   .hero-featured-footer {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
     gap: 8px !important;
     padding-top: 8px !important;
     border-top: 1px solid #f1f5f9 !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
   }
 
   .hero-featured-price {
     font-size: 1.0rem !important;
+    white-space: nowrap !important;
   }
 
   .hero-price-vat {
     font-size: 0.62rem !important;
+    white-space: nowrap !important;
   }
 
   .hero-view-btn {
     height: 32px !important;
     padding: 0 10px !important;
     font-size: 0.74rem !important;
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
   }
 
   /* ==========================================================================
@@ -6140,35 +6204,56 @@
   }
 
   /* ==========================================================================
-     STAY UPDATED (NEWSLETTER) - SMALL TEXT & 2 ROW DIVIDED
+     STAY UPDATED (NEWSLETTER) - LEFT ALIGNED & RESPONSIVE FOR MOBILE
      ========================================================================== */
   .newsletter-section--clean {
-    padding: 24px 0 !important;
+    padding: 22px 0 !important;
+    background: #f8fafc !important;
+    border-top: 1px solid #e2e8f0 !important;
   }
 
   .newsletter--clean {
-    display: grid !important;
-    grid-template-columns: 1fr !important;
-    gap: 12px !important;
-    text-align: center !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 14px !important;
+    text-align: left !important;
+    align-items: stretch !important;
+    width: 100% !important;
+    padding-inline: 16px !important;
+    box-sizing: border-box !important;
   }
 
+  .newsletter-copy-wrap,
+  .newsletter--clean > div:first-child,
+  .newsletter > div {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    text-align: left !important;
+    gap: 4px !important;
+    width: 100% !important;
+  }
+
+  .newsletter-title,
   .newsletter--clean h2,
   .newsletter h2 {
     font-size: 1.15rem !important;
     line-height: 1.25 !important;
     font-weight: 800 !important;
     color: #0f172a !important;
-    margin: 0 0 4px 0 !important;
+    margin: 0 !important;
+    text-align: left !important;
   }
 
+  .newsletter-desc,
   .newsletter--clean p,
   .newsletter p {
-    font-size: 0.78rem !important;
-    line-height: 1.4 !important;
+    font-size: 0.8rem !important;
+    line-height: 1.42 !important;
     color: #64748b !important;
     max-width: 100% !important;
     margin: 0 !important;
+    text-align: left !important;
   }
 
   .newsletter-form {
@@ -6180,6 +6265,8 @@
     border: 1px solid #e2e8f0 !important;
     border-radius: 12px !important;
     box-shadow: 0 2px 10px rgba(15, 23, 42, 0.04) !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
   }
 
   .newsletter-form .input,
@@ -6191,6 +6278,8 @@
     font-size: 0.8rem !important;
     border-radius: 8px !important;
     background: #f8fafc !important;
+    box-sizing: border-box !important;
+    border: 1px solid #e2e8f0 !important;
   }
 
   .newsletter-form .button,
@@ -6202,6 +6291,7 @@
     font-weight: 700 !important;
     justify-content: center !important;
     border-radius: 8px !important;
+    box-sizing: border-box !important;
   }
 
   .newsletter-form > span {
@@ -6209,7 +6299,7 @@
     display: block !important;
     font-size: 0.68rem !important;
     margin-top: 4px !important;
-    text-align: center !important;
+    text-align: left !important;
     color: #64748b !important;
   }
 

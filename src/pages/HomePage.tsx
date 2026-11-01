@@ -223,10 +223,10 @@ export function HomePage() {
               <span>ABC EV PART · HIGH-VOLTAGE PERFORMANCE</span>
             </div>
 
-            <Heading as="h1" className="hero-headline">
+            <h1 className="hero-headline">
               High-Performance EV Parts.{" "}
               <span className="hero-headline__accent">Delivered Across Nepal.</span>
-            </Heading>
+            </h1>
             <p className="hero__copy">
               Authentic high-performance components and EV systems delivered directly to your doorstep across Nepal with 13% VAT included upfront.
             </p>
@@ -761,9 +761,9 @@ export function HomePage() {
         data-reveal
       >
         <div className="container newsletter newsletter--clean">
-          <div>
-            <Heading>Stay Updated</Heading>
-            <p>
+          <div className="newsletter-copy-wrap">
+            <h2 className="newsletter-title">Stay Updated</h2>
+            <p className="newsletter-desc">
               Subscribe for new arrivals, exclusive discounts, and product announcements.
             </p>
           </div>
