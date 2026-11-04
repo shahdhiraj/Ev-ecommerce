@@ -7332,3 +7332,14 @@ input.auth-input:active {
   box-shadow: 0 0 0 3px rgba(148, 163, 184, 0.25) !important; /* neutral gray focus ring, zero orange */
 }
 
+/* Strict enforcement: Hide any desktop header Mobile App switcher button */
+@media (min-width: 768px) {
+  .modern-header a[href="/app"],
+  .modern-header a[href="/mobile-app"],
+  .clean-header a[href="/app"],
+  .clean-header a[href="/mobile-app"] {
+    display: none !important;
+  }
+}
+
+
