@@ -21,7 +21,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 24px;
+  padding: 12px var(--page-gutter);
   background: rgba(15, 23, 42, 0.75);
   backdrop-filter: blur(20px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
@@ -88,7 +88,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 24px 20px 40px;
+  padding: 24px var(--page-gutter) 40px;
   gap: 40px;
 }
 

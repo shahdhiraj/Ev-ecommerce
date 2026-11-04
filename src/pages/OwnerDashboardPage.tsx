@@ -482,9 +482,9 @@ export function OwnerDashboardPage() {
   }
 
   return (
-    <div className="ubuy-dash-shell">
+    <div className="ubuy-dash-shell page-grid">
       {/* Main Content Area */}
-      <div className="dash-main-area">
+      <div className="dash-main-area page-content">
         {/* Top Dashboard Header Bar */}
         <div className="dash-header-bar">
           <div className="dash-header-left">

@@ -177,9 +177,9 @@ export function AuthPage() {
   }
 
   return (
-    <div className="min-h-[90vh] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-slate-50 via-white to-slate-50/80">
+    <div className="page-grid min-h-[90vh] items-center py-12 bg-gradient-to-b from-slate-50 via-white to-slate-50/80">
       {/* Spacious Big Rounded Border Box */}
-      <div className="w-full max-w-2xl bg-white rounded-3xl border-2 border-slate-200/90 shadow-2xl shadow-slate-200/50 p-7 sm:p-11 transition-all">
+      <div className="page-content justify-self-center w-full max-w-2xl bg-white rounded-3xl border-2 border-slate-200/90 shadow-2xl shadow-slate-200/50 p-7 sm:p-11 transition-all">
         {/* Brand & Heading */}
         <div className="text-center mb-8">
           <AppLink to="/" className="inline-flex items-center gap-2.5 mb-3 group hover:opacity-95 transition-opacity">

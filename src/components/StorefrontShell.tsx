@@ -35,7 +35,6 @@ import {
   ShieldCheck,
   ShoppingBag,
   Sliders,
-  Smartphone,
   Sun,
   Trash2,
   TrendingUp,
@@ -388,10 +387,11 @@ export function StorefrontShell() {
     location.pathname === "/app" ||
     location.pathname === "/mobile-app"
 
-  // Automatically show Mobile App UI on mobile devices when accessing storefront root /
+  // Automatically show Mobile App UI on all mobile device visits to the storefront
+  // (excludes dashboard routes like /owner and /account which are always web)
   const shouldAutoShowMobileApp =
     isMobileAppRoute ||
-    (location.pathname === "/" && isMobileDevice && !preferWebStore)
+    (isMobileDevice && !preferWebStore && !isDashboardRoute)
 
   if (shouldAutoShowMobileApp) {
     return (
@@ -1586,34 +1586,6 @@ export function StorefrontShell() {
               </IconButton>
             </div>
 
-            {/* Mobile App Mode Banner in Drawer */}
-            <div className="p-3 bg-gradient-to-r from-orange-500/10 via-amber-500/10 to-orange-500/10 border-b border-orange-200/50">
-              <button
-                type="button"
-                onClick={() => {
-                  setMenuOpen(false)
-                  sessionStorage.removeItem("prefer-web-store")
-                  setPreferWebStore(false)
-                  navigate("/")
-                }}
-                className="w-full text-left flex items-center justify-between p-2.5 rounded-xl bg-white border border-orange-200 shadow-xs hover:border-orange-400 transition-all cursor-pointer"
-              >
-                <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 rounded-lg bg-orange-500 text-white flex items-center justify-center shrink-0">
-                    <Smartphone size={16} />
-                  </div>
-                  <div>
-                    <div className="text-xs font-extrabold text-slate-900 flex items-center gap-1.5">
-                      <span>Native Mobile App UI</span>
-                      <span className="px-1.5 py-0.2 rounded text-[9px] bg-orange-500 text-white font-bold">120Hz</span>
-                    </div>
-                    <div className="text-[10px] text-orange-600 font-semibold">Dynamic Island · Stories · Quick Buy</div>
-                  </div>
-                </div>
-                <ChevronRight size={16} className="text-orange-500" />
-              </button>
-            </div>
-
             <div className="mobile-nav">
               <span className="mobile-nav__label">Shop Categories</span>
               <AppLink onClick={() => setMenuOpen(false)} to="/categories">
@@ -1831,22 +1803,6 @@ export function StorefrontShell() {
           <LayoutGrid size={20} />
           <span>Explore</span>
         </AppLink>
-
-        <button
-          type="button"
-          onClick={() => {
-            sessionStorage.removeItem("prefer-web-store")
-            setPreferWebStore(false)
-            navigate("/")
-          }}
-          className={`mobile-bottom-nav__item ${!preferWebStore ? "is-active text-orange-600 font-bold" : ""}`}
-        >
-          <div className="relative inline-flex items-center justify-center">
-            <Smartphone size={20} className="text-orange-500" />
-            <span className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-ping absolute -top-0.5 -right-0.5" />
-          </div>
-          <span className="font-bold text-orange-600">App UI</span>
-        </button>
 
         <AppLink
           to="/wishlist"

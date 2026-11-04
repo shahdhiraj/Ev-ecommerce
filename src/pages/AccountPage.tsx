@@ -280,9 +280,9 @@ export function AccountPage() {
     user.addresses.find((a) => a.isDefault) || user.addresses[0]
 
   return (
-    <div className="ubuy-dash-shell">
+    <div className="ubuy-dash-shell page-grid">
       {/* Main Content Area */}
-      <div className="dash-main-area">
+      <div className="dash-main-area page-content">
         {/* Top Dashboard Header Bar - Clean Minimal Page Title */}
         <div className="dash-header-bar">
           <div className="dash-header-left">
