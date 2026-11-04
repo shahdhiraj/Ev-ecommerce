@@ -2,6 +2,39 @@
    MOBILE APP UI & SIMULATOR EXPERIENCE STYLES
    ========================================================================== */
 
+/* Embedded Mobile App UI inside StorefrontShell on Mobile Browsers */
+.embedded-mobile-app {
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  min-height: calc(100vh - 120px);
+  background: #f8fafc;
+  color: #0f172a;
+  display: flex;
+  flex-direction: column;
+}
+
+.embedded-mobile-app.is-dark {
+  background: #090d16;
+  color: #f8fafc;
+}
+
+.embedded-mobile-app .device-screen {
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  border: none !important;
+  min-height: auto !important;
+  height: auto !important;
+  background: transparent !important;
+  overflow: visible !important;
+}
+
+.embedded-mobile-app .mobile-app-scroll-content {
+  overflow: visible !important;
+  height: auto !important;
+  padding-bottom: 24px !important;
+}
+
 /* Device Simulator Wrapper on Desktop */
 .mobile-simulator-layout {
   min-height: 100vh;
@@ -182,6 +215,35 @@
 
 /* When viewed on actual mobile screen (< 768px), strip frame completely for native app feel */
 @media (max-width: 767px) {
+  .embedded-mobile-app {
+    height: auto !important;
+    min-height: auto !important;
+    overflow: visible !important;
+    padding-bottom: 70px !important;
+  }
+  .embedded-mobile-app .simulator-workspace {
+    height: auto !important;
+    min-height: auto !important;
+    overflow: visible !important;
+    display: block !important;
+    padding: 0 !important;
+  }
+  .embedded-mobile-app .device-chassis {
+    height: auto !important;
+    min-height: auto !important;
+    overflow: visible !important;
+  }
+  .embedded-mobile-app .device-screen {
+    height: auto !important;
+    min-height: auto !important;
+    overflow: visible !important;
+  }
+  .embedded-mobile-app .mobile-app-scroll-content {
+    height: auto !important;
+    overflow: visible !important;
+    padding-bottom: 20px !important;
+  }
+
   .mobile-simulator-layout {
     min-height: 100dvh !important;
     height: 100dvh !important;

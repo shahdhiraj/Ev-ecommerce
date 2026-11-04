@@ -35,6 +35,7 @@ import {
   ShieldCheck,
   ShoppingBag,
   Sliders,
+  Smartphone,
   Sun,
   Trash2,
   TrendingUp,
@@ -387,19 +388,11 @@ export function StorefrontShell() {
     location.pathname === "/app" ||
     location.pathname === "/mobile-app"
 
-  // Automatically show Mobile App UI on all mobile device visits to the storefront
-  // (excludes dashboard routes like /owner and /account which are always web)
-  const shouldAutoShowMobileApp =
-    isMobileAppRoute ||
-    (isMobileDevice && !preferWebStore && !isDashboardRoute)
-
-  if (shouldAutoShowMobileApp) {
+  // Standalone full simulator for desktop visits to /app or /mobile-app
+  if (isMobileAppRoute && !isMobileDevice) {
     return (
       <MobileAppPage
-        onSwitchToWebStore={() => {
-          sessionStorage.setItem("prefer-web-store", "true")
-          setPreferWebStore(true)
-        }}
+        onSwitchToWebStore={() => navigate("/")}
       />
     )
   }
@@ -1467,13 +1460,18 @@ export function StorefrontShell() {
         </nav>
       </header>
 
-      {/* Outlet with Full Commerce Context */}
+      {/* Outlet with Full Commerce Context or Embedded Mobile App UI */}
       <main id="main-content" tabIndex={-1} className="focus:outline-none">
-        <Outlet context={storefrontContext} />
+        {(isMobileAppRoute || (location.pathname === "/" && isMobileDevice && !preferWebStore)) ? (
+          <MobileAppPage embedded={true} />
+        ) : (
+          <Outlet context={storefrontContext} />
+        )}
       </main>
 
       {/* Clean Modern 5-Column Luxury Footer */}
-      <footer className="clean-footer">
+      {!(isMobileDevice && (location.pathname === "/" || isMobileAppRoute) && !preferWebStore) && (
+        <footer className="clean-footer">
         <div className="container clean-footer__grid">
           {/* Column 1: Brand & Overview */}
           <div className="footer-brand-col">
@@ -1560,6 +1558,7 @@ export function StorefrontShell() {
           </span>
         </div>
       </footer>
+      )}
 
       {/* Mobile Drawer */}
       {menuOpen && (
@@ -1802,6 +1801,20 @@ export function StorefrontShell() {
         >
           <LayoutGrid size={20} />
           <span>Explore</span>
+        </AppLink>
+
+        <AppLink
+          to="/app"
+          className={`mobile-bottom-nav__item ${
+            location.pathname === "/app" || location.pathname === "/mobile-app" || (location.pathname === "/" && isMobileDevice && !preferWebStore)
+              ? "is-active text-orange-600 font-bold"
+              : ""
+          }`}
+        >
+          <div className="relative inline-flex items-center justify-center">
+            <Smartphone size={20} className="text-orange-500" />
+          </div>
+          <span>App UI</span>
         </AppLink>
 
         <AppLink

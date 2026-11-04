@@ -53,9 +53,10 @@ type TabType = "home" | "categories" | "deals" | "cart" | "profile"
 
 export interface MobileAppPageProps {
   onSwitchToWebStore?: () => void
+  embedded?: boolean
 }
 
-export function MobileAppPage({ onSwitchToWebStore }: MobileAppPageProps = {}) {
+export function MobileAppPage({ onSwitchToWebStore, embedded = false }: MobileAppPageProps = {}) {
   const navigate = useNavigate()
   const commerce = useCommerce()
 
@@ -267,11 +268,12 @@ export function MobileAppPage({ onSwitchToWebStore }: MobileAppPageProps = {}) {
   }
 
   return (
-    <div className={`mobile-simulator-layout ${isDarkMode ? "is-dark" : ""}`}>
+    <div className={embedded ? `embedded-mobile-app ${isDarkMode ? "is-dark" : ""}` : `mobile-simulator-layout ${isDarkMode ? "is-dark" : ""}`}>
       {/* ======================================================================
           SIMULATOR TOP CONTROL BAR (VISIBLE ON DESKTOP & TABLET)
           ====================================================================== */}
-      <header className="simulator-top-bar">
+      {!embedded && (
+        <header className="simulator-top-bar">
         <div className="simulator-brand">
           <Link
             to="/"
@@ -365,13 +367,15 @@ export function MobileAppPage({ onSwitchToWebStore }: MobileAppPageProps = {}) {
           </button>
         </div>
       </header>
+      )}
 
       {/* ======================================================================
           SIMULATOR WORKSPACE & COMPANION PANEL
           ====================================================================== */}
-      <main className="simulator-workspace">
+      <main className={embedded ? "w-full" : "simulator-workspace"}>
         {/* Companion Feature Panel on Desktop */}
-        <aside className="simulator-side-panel">
+        {!embedded && (
+          <aside className="simulator-side-panel">
           <div className="flex items-center gap-2">
             <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping" />
             <h3 className="text-sm font-bold text-white tracking-wide">
@@ -468,18 +472,20 @@ export function MobileAppPage({ onSwitchToWebStore }: MobileAppPageProps = {}) {
             <span className="text-emerald-400 font-semibold">Online · 200 OK</span>
           </div>
         </aside>
+        )}
 
         {/* ====================================================================
             THE SMARTPHONE DEVICE CHASSIS & SCREEN
             ==================================================================== */}
         <div
-          className={`device-chassis device-chassis--${device}`}
-          style={{ transform: scale !== 100 ? `scale(${scale / 100})` : undefined }}
+          className={embedded ? "w-full" : `device-chassis device-chassis--${device}`}
+          style={{ transform: !embedded && scale !== 100 ? `scale(${scale / 100})` : undefined }}
         >
-          <div className={`device-screen ${isDarkMode ? "bg-slate-950 text-white" : "bg-slate-50 text-slate-900"}`}>
+          <div className={embedded ? "w-full" : `device-screen ${isDarkMode ? "bg-slate-950 text-white" : "bg-slate-50 text-slate-900"}`}>
             {/* 1. OS Status Bar with Dynamic Island */}
-            <div className={`app-os-bar ${isDarkMode ? "bg-slate-950 text-white" : "bg-white text-slate-900"}`}>
-              <span className="app-os-time">{currentTime}</span>
+            {!embedded && (
+              <div className={`app-os-bar ${isDarkMode ? "bg-slate-950 text-white" : "bg-white text-slate-900"}`}>
+                <span className="app-os-time">{currentTime}</span>
 
               {/* Interactive Dynamic Island (iPhone style) */}
               {device === "iphone" && (
@@ -528,6 +534,7 @@ export function MobileAppPage({ onSwitchToWebStore }: MobileAppPageProps = {}) {
                 </div>
               </div>
             </div>
+            )}
 
             {/* 2. Top App Navigation Header */}
             <header className={`mobile-app-header ${isDarkMode ? "bg-slate-950 border-slate-800" : "bg-white border-slate-100"}`}>
@@ -584,42 +591,44 @@ export function MobileAppPage({ onSwitchToWebStore }: MobileAppPageProps = {}) {
                 </div>
               </div>
 
-              {/* Search Bar with Camera Scanner & Mic */}
-              <div className={`mobile-app-search-bar ${isDarkMode ? "bg-slate-900 border-slate-800" : "bg-slate-100 border-slate-200"}`}>
-                <Search size={15} className="text-slate-400 shrink-0" />
-                <input
-                  type="text"
-                  placeholder="Search 800V motors, LFP cells, SiC inverters..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className={isDarkMode ? "text-white placeholder:text-slate-500" : ""}
-                />
-                {searchQuery && (
+              {/* Search Bar with Camera Scanner & Mic (Desktop Simulator only - Shell header has search) */}
+              {!embedded && (
+                <div className={`mobile-app-search-bar ${isDarkMode ? "bg-slate-900 border-slate-800" : "bg-slate-100 border-slate-200"}`}>
+                  <Search size={15} className="text-slate-400 shrink-0" />
+                  <input
+                    type="text"
+                    placeholder="Search 800V motors, LFP cells, SiC inverters..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className={isDarkMode ? "text-white placeholder:text-slate-500" : ""}
+                  />
+                  {searchQuery && (
+                    <button
+                      type="button"
+                      onClick={() => setSearchQuery("")}
+                      className="mobile-search-tool-btn text-slate-400 hover:text-slate-600"
+                    >
+                      <X size={14} />
+                    </button>
+                  )}
                   <button
                     type="button"
-                    onClick={() => setSearchQuery("")}
-                    className="mobile-search-tool-btn text-slate-400 hover:text-slate-600"
+                    className="mobile-search-tool-btn"
+                    onClick={() => setScannerOpen(true)}
+                    title="Scan EV Part QR / Barcode"
                   >
-                    <X size={14} />
+                    <Camera size={15} />
                   </button>
-                )}
-                <button
-                  type="button"
-                  className="mobile-search-tool-btn"
-                  onClick={() => setScannerOpen(true)}
-                  title="Scan EV Part QR / Barcode"
-                >
-                  <Camera size={15} />
-                </button>
-                <button
-                  type="button"
-                  className="mobile-search-tool-btn"
-                  onClick={() => setVoiceOpen(true)}
-                  title="Voice Search"
-                >
-                  <Mic size={15} />
-                </button>
-              </div>
+                  <button
+                    type="button"
+                    className="mobile-search-tool-btn"
+                    onClick={() => setVoiceOpen(true)}
+                    title="Voice Search"
+                  >
+                    <Mic size={15} />
+                  </button>
+                </div>
+              )}
             </header>
 
             {/* ================================================================
@@ -1252,68 +1261,70 @@ export function MobileAppPage({ onSwitchToWebStore }: MobileAppPageProps = {}) {
             </div>
 
             {/* ================================================================
-                4. NATIVE APP BOTTOM NAVIGATION BAR
+                4. NATIVE APP BOTTOM NAVIGATION BAR (Desktop Simulator only - Shell nav used on mobile)
                 ================================================================ */}
-            <nav className={`mobile-app-bottom-bar ${isDarkMode ? "bg-slate-950/95 border-slate-800" : ""}`}>
-              <button
-                type="button"
-                className={`mobile-app-tab-item ${activeTab === "home" ? "is-active" : ""}`}
-                onClick={() => setActiveTab("home")}
-              >
-                <div className="mobile-app-tab-icon-wrap">
-                  <Home size={19} />
-                </div>
-                <span>Home</span>
-              </button>
+            {!embedded && (
+              <nav className={`mobile-app-bottom-bar ${isDarkMode ? "bg-slate-950/95 border-slate-800" : ""}`}>
+                <button
+                  type="button"
+                  className={`mobile-app-tab-item ${activeTab === "home" ? "is-active" : ""}`}
+                  onClick={() => setActiveTab("home")}
+                >
+                  <div className="mobile-app-tab-icon-wrap">
+                    <Home size={19} />
+                  </div>
+                  <span>Home</span>
+                </button>
 
-              <button
-                type="button"
-                className={`mobile-app-tab-item ${activeTab === "categories" ? "is-active" : ""}`}
-                onClick={() => setActiveTab("categories")}
-              >
-                <div className="mobile-app-tab-icon-wrap">
-                  <Grid size={19} />
-                </div>
-                <span>Catalog</span>
-              </button>
+                <button
+                  type="button"
+                  className={`mobile-app-tab-item ${activeTab === "categories" ? "is-active" : ""}`}
+                  onClick={() => setActiveTab("categories")}
+                >
+                  <div className="mobile-app-tab-icon-wrap">
+                    <Grid size={19} />
+                  </div>
+                  <span>Catalog</span>
+                </button>
 
-              <button
-                type="button"
-                className={`mobile-app-tab-item ${activeTab === "deals" ? "is-active" : ""}`}
-                onClick={() => setActiveTab("deals")}
-              >
-                <div className="mobile-app-tab-icon-wrap">
-                  <Tag size={19} />
-                </div>
-                <span>Deals</span>
-              </button>
+                <button
+                  type="button"
+                  className={`mobile-app-tab-item ${activeTab === "deals" ? "is-active" : ""}`}
+                  onClick={() => setActiveTab("deals")}
+                >
+                  <div className="mobile-app-tab-icon-wrap">
+                    <Tag size={19} />
+                  </div>
+                  <span>Deals</span>
+                </button>
 
-              <button
-                type="button"
-                className={`mobile-app-tab-item ${activeTab === "cart" ? "is-active" : ""}`}
-                onClick={() => setActiveTab("cart")}
-              >
-                <div className="mobile-app-tab-icon-wrap">
-                  <ShoppingBag size={19} />
-                  {cartCount > 0 && <span className="mobile-app-tab-badge">{cartCount}</span>}
-                </div>
-                <span>Cart</span>
-              </button>
+                <button
+                  type="button"
+                  className={`mobile-app-tab-item ${activeTab === "cart" ? "is-active" : ""}`}
+                  onClick={() => setActiveTab("cart")}
+                >
+                  <div className="mobile-app-tab-icon-wrap">
+                    <ShoppingBag size={19} />
+                    {cartCount > 0 && <span className="mobile-app-tab-badge">{cartCount}</span>}
+                  </div>
+                  <span>Cart</span>
+                </button>
 
-              <button
-                type="button"
-                className={`mobile-app-tab-item ${activeTab === "profile" ? "is-active" : ""}`}
-                onClick={() => setActiveTab("profile")}
-              >
-                <div className="mobile-app-tab-icon-wrap">
-                  <User size={19} />
-                </div>
-                <span>Account</span>
-              </button>
+                <button
+                  type="button"
+                  className={`mobile-app-tab-item ${activeTab === "profile" ? "is-active" : ""}`}
+                  onClick={() => setActiveTab("profile")}
+                >
+                  <div className="mobile-app-tab-icon-wrap">
+                    <User size={19} />
+                  </div>
+                  <span>Account</span>
+                </button>
 
-              {/* iOS Home Indicator Gesture Bar */}
-              <div className="mobile-app-home-indicator" />
-            </nav>
+                {/* iOS Home Indicator Gesture Bar */}
+                <div className="mobile-app-home-indicator" />
+              </nav>
+            )}
 
             {/* ================================================================
                 5. MODALS & BOTTOM SHEETS
