@@ -6712,8 +6712,15 @@ html.is-dark,
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
-  scrollbar-width: thin;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
   padding-bottom: 12px;
+}
+
+.product-carousel::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
 }
 
 .product-carousel > * {

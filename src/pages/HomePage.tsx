@@ -14,6 +14,8 @@ import {
   Heart,
   Layers,
   Mail,
+  Pause,
+  Play,
   RotateCw,
   Search,
   ShieldAlert,
@@ -159,6 +161,9 @@ export function HomePage() {
     useState<"all" | "powertrain" | "battery" | "charging" | "chassis">("all")
   const [activeHeroIdx, setActiveHeroIdx] = useState(0)
   const [addedId, setAddedId] = useState<string | null>(null)
+  const [isAutoPlay, setIsAutoPlay] = useState(true)
+  const [isHovered, setIsHovered] = useState(false)
+  const [scrollProgress, setScrollProgress] = useState(0)
   const currentHero = heroFlagships[activeHeroIdx]
 
   useEffect(() => {
@@ -178,11 +183,74 @@ export function HomePage() {
     return () => observer.disconnect()
   }, [])
 
+  // Auto-scroll in infinite loop effect
+  useEffect(() => {
+    if (!isAutoPlay || isHovered) return
+
+    const interval = setInterval(() => {
+      const el = carouselRef.current
+      if (!el) return
+
+      const maxScroll = el.scrollWidth - el.clientWidth
+      if (maxScroll <= 5) return
+
+      const cardWidth = el.firstElementChild
+        ? (el.firstElementChild as HTMLElement).offsetWidth + 20
+        : 320
+
+      // If at end or near end, wrap seamlessly to beginning
+      if (el.scrollLeft >= maxScroll - 20) {
+        el.scrollTo({ left: 0, behavior: "smooth" })
+      } else {
+        el.scrollBy({ left: cardWidth, behavior: "smooth" })
+      }
+    }, 3200)
+
+    return () => clearInterval(interval)
+  }, [isAutoPlay, isHovered, selectedTab])
+
+  // Track scroll position for progress bar
+  useEffect(() => {
+    const el = carouselRef.current
+    if (!el) return
+
+    const handleScroll = () => {
+      const maxScroll = el.scrollWidth - el.clientWidth
+      if (maxScroll > 0) {
+        const ratio = Math.min(1, Math.max(0, el.scrollLeft / maxScroll))
+        setScrollProgress(ratio * 100)
+      } else {
+        setScrollProgress(100)
+      }
+    }
+
+    el.addEventListener("scroll", handleScroll, { passive: true })
+    handleScroll()
+    return () => el.removeEventListener("scroll", handleScroll)
+  }, [selectedTab])
+
   const scrollProducts = (direction: number) => {
-    carouselRef.current?.scrollBy({
-      left: direction * Math.min(carouselRef.current.clientWidth, 820),
-      behavior: "smooth",
-    })
+    const el = carouselRef.current
+    if (!el) return
+
+    const cardWidth = el.firstElementChild
+      ? (el.firstElementChild as HTMLElement).offsetWidth + 20
+      : 320
+    const maxScroll = el.scrollWidth - el.clientWidth
+
+    if (direction > 0) {
+      if (el.scrollLeft >= maxScroll - 20) {
+        el.scrollTo({ left: 0, behavior: "smooth" })
+      } else {
+        el.scrollBy({ left: cardWidth, behavior: "smooth" })
+      }
+    } else {
+      if (el.scrollLeft <= 20) {
+        el.scrollTo({ left: maxScroll, behavior: "smooth" })
+      } else {
+        el.scrollBy({ left: -cardWidth, behavior: "smooth" })
+      }
+    }
   }
 
   const submitNewsletter = (event: React.FormEvent<HTMLFormElement>) => {
@@ -484,28 +552,62 @@ export function HomePage() {
       </section>
 
       {/* Featured Products */}
-      <section className="section section--soft" data-reveal>
+      <section className="section section--soft featured-products-section" data-reveal>
         <div className="container">
-          <div className="section-heading">
+          <div className="section-heading flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6">
             <div>
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-orange-500/10 border border-orange-500/25 text-orange-600 dark:text-orange-400 text-xs font-bold tracking-wide uppercase mb-2">
+                <Zap size={13} className="fill-orange-500 text-orange-500" />
+                <span>Flagship EV Engineering · 100% Authentic</span>
+              </div>
               <Heading>Featured Products</Heading>
               <p className="section-subtitle">
-                Verified high-performance components ready for dispatch.
+                Verified high-performance components ready for doorstep dispatch across Nepal.
               </p>
             </div>
-            <div className="carousel-controls">
-              <IconButton
-                label="Previous products"
-                onClick={() => scrollProducts(-1)}
+
+            {/* Redesigned Controls: Auto-Play Indicator & Stepper Buttons */}
+            <div className="flex items-center gap-3 shrink-0">
+              <button
+                type="button"
+                onClick={() => setIsAutoPlay(!isAutoPlay)}
+                className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold border transition-all cursor-pointer ${
+                  isAutoPlay
+                    ? "bg-emerald-500/10 border-emerald-500/30 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/20"
+                    : "bg-slate-100 dark:bg-slate-800 border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-slate-200"
+                }`}
+                title={isAutoPlay ? "Click to Pause Loop" : "Click to Resume Auto-Scroll Loop"}
               >
-                <ArrowLeft size={20} />
-              </IconButton>
-              <IconButton
-                label="Next products"
-                onClick={() => scrollProducts(1)}
-              >
-                <ArrowRight size={20} />
-              </IconButton>
+                <span className={`w-2 h-2 rounded-full ${isAutoPlay ? "bg-emerald-500 animate-pulse" : "bg-slate-400"}`} />
+                {isAutoPlay ? (
+                  <>
+                    <Pause size={12} />
+                    <span>Auto-Looping</span>
+                  </>
+                ) : (
+                  <>
+                    <Play size={12} />
+                    <span>Paused</span>
+                  </>
+                )}
+              </button>
+
+              <div className="carousel-controls flex items-center gap-1.5">
+                <IconButton
+                  label="Previous products"
+                  onClick={() => scrollProducts(-1)}
+                  className="w-10 h-10 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xs hover:border-orange-500 hover:text-orange-500 transition-all cursor-pointer active:scale-95"
+                >
+                  <ArrowLeft size={18} />
+                </IconButton>
+                <IconButton
+                  label="Next products"
+                  onClick={() => scrollProducts(1)}
+                  className="w-10 h-10 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xs hover:border-orange-500 hover:text-orange-500 transition-all cursor-pointer active:scale-95"
+                >
+                  <ArrowRight size={18} />
+                </IconButton>
+              </div>
             </div>
           </div>
 
@@ -517,115 +619,155 @@ export function HomePage() {
               ["battery", "Batteries"],
               ["charging", "Charging"],
               ["chassis", "Brakes & Aero"],
-            ].map(([key, label]) => (
-              <button
-                key={key}
-                className={selectedTab === key ? "is-active" : ""}
-                onClick={() => setSelectedTab(key as typeof selectedTab)}
-                type="button"
-              >
-                {label}
-              </button>
-            ))}
+            ].map(([key, label]) => {
+              const count = allProducts.filter((item) => {
+                if (key === "powertrain") return item.subcategory.includes("Powertrain") || item.subcategory.includes("Inverters")
+                if (key === "battery") return item.subcategory.includes("Battery") || item.subcategory.includes("Thermal")
+                if (key === "charging") return item.subcategory.includes("Charging")
+                if (key === "chassis") return item.subcategory.includes("Brakes") || item.subcategory.includes("Aero")
+                return true
+              }).length
+
+              return (
+                <button
+                  key={key}
+                  className={selectedTab === key ? "is-active" : ""}
+                  onClick={() => setSelectedTab(key as typeof selectedTab)}
+                  type="button"
+                >
+                  {label} <span className="opacity-75 font-normal ml-1">({count})</span>
+                </button>
+              )
+            })}
           </div>
 
-          <div className="product-carousel" ref={carouselRef}>
-            {filteredProducts.map((product) => (
-              <article
-                className="search-product-card search-product-card--grid search-product-card--clean"
-                key={product.id}
-              >
-                <div className="search-product-card__visual">
-                  <button
-                    aria-label={`Save ${product.name}`}
-                    className={`card-wishlist-btn ${
-                      wishlist.has(product.id) ? "is-active" : ""
-                    }`}
-                    onClick={() => toggleWishlist(product.id)}
-                    type="button"
-                  >
-                    <Heart
-                      className={
-                        wishlist.has(product.id)
-                          ? "text-red-500 fill-red-500"
-                          : "text-slate-700"
-                      }
-                      size={18}
-                    />
-                  </button>
+          {/* Carousel Viewport with Hover-Pause */}
+          <div
+            className="carousel-viewport-wrapper relative"
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+            onTouchStart={() => setIsHovered(true)}
+            onTouchEnd={() => setIsHovered(false)}
+          >
+            <div className="product-carousel" ref={carouselRef}>
+              {filteredProducts.map((product) => (
+                <article
+                  className="search-product-card search-product-card--grid search-product-card--clean group"
+                  key={product.id}
+                >
+                  <div className="search-product-card__visual relative overflow-hidden">
+                    <button
+                      aria-label={`Save ${product.name}`}
+                      className={`card-wishlist-btn ${
+                        wishlist.has(product.id) ? "is-active" : ""
+                      }`}
+                      onClick={() => toggleWishlist(product.id)}
+                      type="button"
+                    >
+                      <Heart
+                        className={
+                          wishlist.has(product.id)
+                            ? "text-red-500 fill-red-500"
+                            : "text-slate-700"
+                        }
+                        size={18}
+                      />
+                    </button>
 
-                  <img
-                    alt={product.name}
-                    src={product.image}
-                    onClick={() => {
-                      viewProduct(product.id)
-                      navigate(`/product/${product.id}`)
-                    }}
-                    style={{ cursor: "pointer" }}
-                  />
-
-                  <Button
-                    className="quick-view-trigger"
-                    onClick={() => {
-                      setQuickView(product)
-                      viewProduct(product.id)
-                    }}
-                    size="sm"
-                    variant="secondary"
-                  >
-                    <Eye size={15} /> Quick View
-                  </Button>
-                </div>
-
-                <div className="search-product-card__body">
-                  <div className="card-top-row">
-                    <span className="card-brand">{product.brand}</span>
-                    {product.availability !== "In Stock" && (
-                      <span className="card-stock-pill card-stock-pill--out">
-                        {product.availability}
+                    {product.voltage && (
+                      <span className="voltage-pill font-mono text-[10px] font-bold">
+                        {product.voltage}
                       </span>
                     )}
+
+                    <img
+                      alt={product.name}
+                      src={product.image}
+                      onClick={() => {
+                        viewProduct(product.id)
+                        navigate(`/product/${product.id}`)
+                      }}
+                      className="cursor-pointer transition-transform duration-300 group-hover:scale-105"
+                    />
+
+                    <Button
+                      className="quick-view-trigger"
+                      onClick={() => {
+                        setQuickView(product)
+                        viewProduct(product.id)
+                      }}
+                      size="sm"
+                      variant="secondary"
+                    >
+                      <Eye size={15} /> Quick View
+                    </Button>
                   </div>
 
-                  <AppLink
-                    className="product-title-link"
-                    to={`/product/${product.id}`}
-                  >
-                    <Heading as="h3">{product.name}</Heading>
-                  </AppLink>
-
-                  <div className="card-bottom-row">
-                    <div className="card-price-block">
-                      <span className="card-price">
-                        {formatNpr(product.price)}
+                  <div className="search-product-card__body">
+                    <div className="card-top-row">
+                      <span className="card-brand">{product.brand}</span>
+                      <span className="card-stock-pill card-stock-pill--in flex items-center gap-1 text-[11px] font-bold text-emerald-600 dark:text-emerald-400">
+                        <Check size={11} /> Ready to Ship
                       </span>
                     </div>
 
-                    <div className="card-action-btns">
-                      <Button
-                        className={`add-cart-btn ${addedId === product.id ? "is-added" : ""}`}
-                        onClick={() => {
-                          addToCart(product.name, { sku: product.id })
-                          setAddedId(product.id)
-                          setTimeout(() => setAddedId(null), 1800)
-                        }}
-                        size="sm"
-                      >
-                        {addedId === product.id ? (
-                          <>
-                            <Check size={15} /> Added ✓
-                          </>
-                        ) : (
-                          <>
-                            <ShoppingBag size={15} /> Add to Cart
-                          </>
-                        )}
-                      </Button>
+                    <AppLink
+                      className="product-title-link"
+                      to={`/product/${product.id}`}
+                    >
+                      <Heading as="h3">{product.name}</Heading>
+                    </AppLink>
+
+                    <div className="card-bottom-row">
+                      <div className="card-price-block">
+                        <span className="card-price">
+                          {formatNpr(product.price)}
+                        </span>
+                        <span className="text-[10px] text-slate-400 font-medium block">
+                          13% Nepal VAT included
+                        </span>
+                      </div>
+
+                      <div className="card-action-btns">
+                        <Button
+                          className={`add-cart-btn ${addedId === product.id ? "is-added" : ""}`}
+                          onClick={() => {
+                            addToCart(product.name, { sku: product.id })
+                            setAddedId(product.id)
+                            setTimeout(() => setAddedId(null), 1800)
+                          }}
+                          size="sm"
+                        >
+                          {addedId === product.id ? (
+                            <>
+                              <Check size={15} /> Added ✓
+                            </>
+                          ) : (
+                            <>
+                              <ShoppingBag size={15} /> Add to Cart
+                            </>
+                          )}
+                        </Button>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </article>
-            ))}
+                </article>
+              ))}
+            </div>
+
+            {/* Sleek Loop Progress Track at the bottom (replaces ugly scrollbar) */}
+            <div className="featured-loop-bar mt-4 flex items-center justify-between gap-4">
+              <div className="flex-1 h-1.5 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden">
+                <div
+                  className="h-full bg-gradient-to-r from-orange-500 to-amber-500 rounded-full transition-all duration-300"
+                  style={{ width: `${Math.max(10, scrollProgress)}%` }}
+                />
+              </div>
+              <div className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 shrink-0 flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse" />
+                <span>Infinite Loop · {filteredProducts.length} Items</span>
+              </div>
+            </div>
           </div>
         </div>
       </section>
