@@ -904,10 +904,6 @@ export function HomePage() {
       >
         <div className="container newsletter newsletter--clean">
           <div className="newsletter-copy-wrap">
-            <div className="newsletter-badge">
-              <Mail size={13} className="text-orange-500" />
-              <span>EV Performance Bulletin</span>
-            </div>
             <h2 className="newsletter-title">Stay Updated</h2>
             <p className="newsletter-desc">
               Subscribe for new arrivals, exclusive discounts, and product announcements.
