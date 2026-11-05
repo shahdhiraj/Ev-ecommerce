@@ -706,9 +706,6 @@ export function HomePage() {
                   <div className="search-product-card__body">
                     <div className="card-top-row">
                       <span className="card-brand">{product.brand}</span>
-                      <span className="card-stock-pill card-stock-pill--in flex items-center gap-1 text-[11px] font-bold text-emerald-600 dark:text-emerald-400">
-                        <Check size={11} /> Ready to Ship
-                      </span>
                     </div>
 
                     <AppLink
@@ -722,9 +719,6 @@ export function HomePage() {
                       <div className="card-price-block">
                         <span className="card-price">
                           {formatNpr(product.price)}
-                        </span>
-                        <span className="text-[10px] text-slate-400 font-medium block">
-                          13% Nepal VAT included
                         </span>
                       </div>
 
