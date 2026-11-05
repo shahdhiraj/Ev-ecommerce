@@ -904,45 +904,75 @@ export function HomePage() {
       >
         <div className="container newsletter newsletter--clean">
           <div className="newsletter-copy-wrap">
+            <div className="newsletter-badge">
+              <Mail size={13} className="text-orange-500" />
+              <span>EV Performance Bulletin</span>
+            </div>
             <h2 className="newsletter-title">Stay Updated</h2>
             <p className="newsletter-desc">
               Subscribe for new arrivals, exclusive discounts, and product announcements.
             </p>
           </div>
-          <form
-            className={`newsletter-form newsletter-form--${newsletterState}`}
-            noValidate
-            onSubmit={submitNewsletter}
-          >
-            <Input
-              aria-describedby="newsletter-feedback"
-              aria-invalid={newsletterState === "error"}
-              onChange={(event) => {
-                setEmail(event.target.value)
-                setNewsletterState("idle")
-              }}
-              placeholder="Enter your email address"
-              type="email"
-              value={email}
-            />
-            <Button type="submit">
-              {newsletterState === "success"
-                ? "Subscribed"
-                : "Subscribe"}{" "}
-              {newsletterState === "success" ? (
-                <Check size={17} />
-              ) : (
-                <ArrowRight size={17} />
-              )}
-            </Button>
-            <span id="newsletter-feedback">
-              {newsletterState === "error"
-                ? "Please enter a valid email address."
-                : newsletterState === "success"
-                  ? "Thank you for subscribing!"
-                  : "No spam. Unsubscribe anytime."}
-            </span>
-          </form>
+
+          <div className="newsletter-action-wrap">
+            <form
+              className={`newsletter-form newsletter-form--${newsletterState}`}
+              noValidate
+              onSubmit={submitNewsletter}
+            >
+              <div className="newsletter-input-group">
+                <Mail size={18} className="newsletter-input-icon text-slate-400 dark:text-slate-500" />
+                <input
+                  aria-describedby="newsletter-feedback"
+                  aria-invalid={newsletterState === "error"}
+                  className="newsletter-native-input"
+                  onChange={(event) => {
+                    setEmail(event.target.value)
+                    setNewsletterState("idle")
+                  }}
+                  placeholder="Enter your email address"
+                  type="email"
+                  value={email}
+                />
+                <button
+                  type="submit"
+                  className={`newsletter-submit-btn ${
+                    newsletterState === "success" ? "is-success" : ""
+                  }`}
+                >
+                  {newsletterState === "success" ? (
+                    <>
+                      <span>Subscribed</span>
+                      <Check size={16} />
+                    </>
+                  ) : (
+                    <>
+                      <span>Subscribe</span>
+                      <ArrowRight size={16} />
+                    </>
+                  )}
+                </button>
+              </div>
+
+              <div id="newsletter-feedback" className="newsletter-feedback-row">
+                {newsletterState === "error" ? (
+                  <span className="feedback-text feedback-text--error">
+                    Please enter a valid email address (e.g. name@domain.com).
+                  </span>
+                ) : newsletterState === "success" ? (
+                  <span className="feedback-text feedback-text--success">
+                    <Check size={13} className="text-emerald-500 inline mr-1" />
+                    Thank you! You are now subscribed to verified EV updates.
+                  </span>
+                ) : (
+                  <span className="feedback-text feedback-text--muted">
+                    <ShieldCheck size={13} className="text-slate-400 dark:text-slate-500 inline mr-1" />
+                    No spam. Unsubscribe anytime.
+                  </span>
+                )}
+              </div>
+            </form>
+          </div>
         </div>
       </section>
 
